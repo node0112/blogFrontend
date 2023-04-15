@@ -1,0 +1,63 @@
+.home{
+    margin-top: 61px;
+}
+
+.posts-container{
+    display: grid;
+    gap: 50px;
+    grid-template-columns: 340px 340px 340px;
+}
+
+.content-title{
+    font-size: 30px;
+    font-family: 'inter', sans-serif;
+    margin-left: 7px;
+    margin-bottom: 17px;
+}
+
+.post{
+    height: 300px;
+    width: 300px;
+    background-color: lightgray;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 20px;
+}
+
+.right-container{
+    position: fixed;
+    right: 50px;
+    top: 0;
+    padding-top: min(250px,33%);
+    width: 200px;
+    height: 70vh;
+    justify-content: space-between;
+}
+.fact-container{
+    gap: 5px;
+}
+.fact-title{
+    font-size: 25px;
+    color: var(--grayblack);
+}
+.fact-text{
+    font-size: 20px;
+    color: var(--lightgray);
+}
+
+
+
+.stat-container{
+    font-size: 20px;
+    color: var(--grayblack);
+    position: absolute;
+    bottom: 50px;
+    text-align: right;
+}
+.stats{
+    justify-content: flex-end;
+    gap: 10px;
+}
+.stat-value{
+    color: var(--lightgray);
+}

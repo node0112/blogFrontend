@@ -12,10 +12,12 @@ function Header() {
     let percentScroll = (headerRect*100)/75
     if(percentScroll <= 1) percentScroll = 1  //prevent value from becoming zero 
     percentScroll = Math.abs(100 - percentScroll) //reverses the percentage so that color goes from black to white on scroll up
-    let colorvalue = 2.38*percentScroll //get values to add to color
+    let gBValue = 2.38*percentScroll //get values for grayblack color
+    let lGValue = 1.17*percentScroll //get values for lightgray color
 
     const root = document.querySelector(':root') 
-    root.style.setProperty('--grayblackheader', "rgb("+(17+colorvalue)+","+(17+colorvalue)+","+(17+colorvalue)+")") //updates element's value
+    root.style.setProperty('--grayblackheader', "rgb("+(17+gBValue)+","+(17+gBValue)+","+(17+gBValue)+")") //updates element's value
+    root.style.setProperty('--darkgray', "rgb("+(138+lGValue)+","+(138+lGValue)+","+(138+lGValue)+")") 
   }
   useEffect(() => {
   window.addEventListener("scroll", ()=>{

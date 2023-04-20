@@ -7,7 +7,6 @@ function Header() {
   function changeColor(){
     let header = document.querySelector(".header")
     let headerRect = header.getBoundingClientRect().top
-    console.log(headerRect)
 
     let percentScroll = (headerRect*100)/75
     if(percentScroll <= 1) percentScroll = 1  //prevent value from becoming zero 

@@ -29,6 +29,10 @@ body{
   align-items: center;
 }
 
+.between{
+  justify-content: space-between;
+}
+
 .cursor{
   cursor: pointer;
 }
@@ -37,3 +41,4 @@ body{
   font-family: 'inter', sans-serif;
 
 }
+

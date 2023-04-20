@@ -78,8 +78,13 @@
     border-bottom: 3px solid var(--accent);
     margin-bottom: 30px;
 }
-.post-content{
+.post-content{      
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
 }
 .post-bottom-container{
     color: var(--accent);

@@ -20,7 +20,7 @@ function App() {
 
   async function fetchPosts(){
     axios.get("https://itypebackend.onrender.com/home")
-    .then(res=>{posts =  res.data.posts; console.log(posts)})
+    .then(res=>{posts =  res.data.posts; console.log(posts);insertPosts()})
     .catch(err =>{return err  }) //handle error 
   }
 
@@ -50,13 +50,20 @@ function App() {
 
       const postDate = document.createElement('div')
       postDate.className = 'post-date'
-      postDate.textContent = (post.date).substring(1,11)
+      postDate.textContent = (post.date).substring(0,10)
 
 
       //add everything to respective containers
       postTopContainer.appendChild(postTitle)
       postTopContainer.appendChild(postAuthor)
       postTopContainer.appendChild(postContent)
+
+      postBottomContainer.appendChild(postDate)
+
+      newPost.appendChild(postTopContainer)
+      newPost.appendChild(postBottomContainer)
+
+      postContainer.appendChild(newPost)
     });   
   }
   return (

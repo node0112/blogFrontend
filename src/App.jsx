@@ -68,7 +68,7 @@ function App() {
   }
   return (
     <div className="App">
-      <div className='logo-bar'>ITYPE</div>
+      <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
       <div className='content-container flex column'>
        <Header />
        <Home />

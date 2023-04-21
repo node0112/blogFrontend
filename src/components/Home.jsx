@@ -23,6 +23,14 @@ function Home() {
                 </div>
               </div>
             </div>
+            <div className="post"></div>
+            <div className="post"></div>
+            <div className="post"></div>
+            <div className="post"></div>
+            <div className="post"></div>
+            <div className="post"></div>
+            <div className="post"></div>
+            <div className="post"></div>
         </div>
       </div>
       <div className="right-container flex column ">

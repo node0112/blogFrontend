@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import './css/header.css'
 
 function Header() {
-  const [count, setCount] = useState(0)
 
   function changeColor(){
     let header = document.querySelector(".header")

@@ -1,7 +1,7 @@
 .header{
     transition: all 0.1s;
     border-bottom: 5px solid var(--darkgray);
-    padding: 0px 7px 0px 7px;
+    padding: 12px 7px 10.5px 0px;
     height: 55px;
     width: 100%;
     justify-content: space-between;
@@ -41,4 +41,11 @@
     transition: all 0.3s ease-out;
     color: var(--lightgray);
     border-bottom: 2px solid var(--darkgray);
+}
+
+@media (max-width: 1055px){
+    .header{
+        visibility: hidden;
+        display: none !important;
+    }
 }

@@ -4,6 +4,7 @@ import './reset.css'
 import Header from './components/Header'
 import Home from './components/Home'
 import axios from 'axios'
+import Sidebar from './components/sidebar'
 
 function App() {
 
@@ -70,9 +71,10 @@ function App() {
     <div className="App">
       <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
       <div className='content-container flex column'>
-       <Header />
+      <Header />
        <Home />
       </div>
+      <Sidebar />
     </div>
   )
 }

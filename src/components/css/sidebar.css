@@ -1,5 +1,11 @@
 
-
 .sidebar{
-    width: 400px;
+    width: 181px;
+    height: calc(100vh - 55px);
+    position: fixed;
+    left: 0;
+    top: 55px;
+    background-color: #eaeaea91 ;
+    backdrop-filter: blur(12px);
+    z-index: 11;
 }

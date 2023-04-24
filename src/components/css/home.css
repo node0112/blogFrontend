@@ -73,15 +73,17 @@
     font-family: 'Roboto', sans-serif;
     border-radius: 20px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
     height: 290px;
     width: 290px;
 }
 
-.post:hover{
+/* .post:hover{
     scale: 1.05;
     box-shadow: 0 0 20px rgb(76, 76, 76);
-}
+    background-color: #ffffff;
+    color: black;
+} */
 
 @media (max-width: 1430px){
     .post{

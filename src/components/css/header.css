@@ -1,13 +1,13 @@
 .header{
     transition: all 0.1s;
     border-bottom: 5px solid var(--darkgray);
-    padding: 12px 7px 10.5px 0px;
     height: 55px;
-    width: 100%;
+    width: calc(100vw - 100px);
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 10;
+    margin-left: 50px;
 }
 
 .head-left{

@@ -42,3 +42,12 @@ body{
 
 }
 
+.small-heading{
+  font-size: 25px;
+  font-family: 'inter', sans-serif;
+  color: var(--grayblack);
+}
+
+input:focus{
+  outline: none !important;
+}

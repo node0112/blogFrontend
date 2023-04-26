@@ -1,0 +1,36 @@
+.title-editor{
+    margin-top: 45px;
+    margin-bottom: 70px;
+}
+.title-input{
+    width: 30vw;
+    background-color: transparent;
+    border: none;
+    border-bottom: 5px solid var(--grayblack);
+    margin-top: 10px;
+    font-size: 25px;
+    text-transform: capitalize;
+    width: 100%;
+}
+
+#color-picker{
+    margin-top: 65px;
+    gap: 65px;
+}
+
+.color-circle{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.color-circle:hover{
+    border: 3px solid var(--grayblack);
+}
+.color-options{
+    display: grid;
+    grid-template-columns: repeat(4,60px);
+    grid-auto-rows: 47px;
+}

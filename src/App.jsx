@@ -5,13 +5,16 @@ import Header from './components/Header'
 import Home from './components/Home'
 import axios from 'axios'
 import Sidebar from './components/sidebar'
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
+import Editpage from './components/EditPage'
 
 function App() {
 
-  const postServ = "https://itypebackend.onrender.com"
-  const [count, setCount] = useState(0)
+  const [selected, setSelected] = useState("home")
 
   let posts
+
+  axios.defaults.baseURL = "https://itypebackend.onrender.com/"
   
   useEffect(()=>{
     //hide default loading screen after getting all posts
@@ -20,7 +23,7 @@ function App() {
   },[Home])
 
   async function fetchPosts(){
-    axios.get("https://itypebackend.onrender.com/home")
+    axios.get("home")
     .then(res=>{posts =  res.data.posts; console.log(posts);insertPosts()})
     .catch(err =>{return err  }) //handle error 
   }
@@ -67,14 +70,20 @@ function App() {
       postContainer.appendChild(newPost)
     });   
   }
+
   return (
     <div className="App">
-      <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
-      <div className='content-container flex column'>
-      <Header />
-       <Home />
-      </div>
-      <Sidebar />
+      <BrowserRouter>
+        <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
+        <Header selected={selected} setSelected={setSelected} />
+        <div className='content-container flex column'>
+            <Routes>
+            <Route path = "/"  element = {<Home />} />
+            <Route path = "/create"  element = {<Editpage type={"new"} />} />
+            </Routes>
+        </div>
+        {/* <Sidebar /> */}
+      </BrowserRouter>
     </div>
   )
 }

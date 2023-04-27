@@ -1,7 +1,7 @@
 :root{
   --darkgray: rgb(138, 138, 138);
   --accent: #BBC7CE;
-  --grayblack: rgb(17, 17, 17);
+  --grayblack: #111111;
   --grayblackheader: rgb(17, 17, 17);
 }
 

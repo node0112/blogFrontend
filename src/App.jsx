@@ -7,6 +7,7 @@ import axios from 'axios'
 import Sidebar from './components/sidebar'
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import Editpage from './components/EditPage'
+import LoginPage from './components/LoginPage'
 
 function App() {
 
@@ -80,6 +81,7 @@ function App() {
             <Routes>
             <Route path = "/"  element = {<Home />} />
             <Route path = "/create"  element = {<Editpage type={"new"} />} />
+            <Route path = "/account"  element = {<LoginPage />} />
             </Routes>
         </div>
         {/* <Sidebar /> */}

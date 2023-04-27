@@ -1,0 +1,30 @@
+.login-box{
+    width: 370px;
+}
+
+.account-inp{
+    border: none;
+    background-color: none;
+    border-bottom: 5px solid var(--grayblack);
+    width: 100%;
+    background: none;
+    font-size: 20px;
+}
+
+.login-form{
+    width: 100%;
+}
+
+.button-container{
+    justify-content: space-between;
+    margin-top: 56px;
+}
+.form-button{
+    width: 174px;
+    height: 48px;
+    border-radius: 15px;
+    color: white;
+    background-color: var(--grayblack);
+    font-size: 20px;
+    border: none;
+}

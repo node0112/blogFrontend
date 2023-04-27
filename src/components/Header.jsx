@@ -50,6 +50,7 @@ function Header({selected,setSelected}) {
           <div className='header-link selected cursor' id='home' onClick={()=>{navigate("/"); setSelected("home")}}>Home</div>
           <div className='header-link cursor' id='create' onClick={()=>{navigate("/create"); setSelected("create")}}>Create</div>
           <div className='header-link cursor'  id="drafts" onClick={()=>{navigate("/drafts");setSelected("drafts")}}>Drafts</div>
+          <div className='header-link cursor'  id="account" onClick={()=>{navigate("/account");setSelected("account")}}>Acc</div>
         </div>
         <div className="head-right">
           <input type="text" className="searchbox" placeholder='Search A Post'/>

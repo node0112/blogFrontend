@@ -3,12 +3,14 @@
   --accent: #BBC7CE;
   --grayblack: #111111;
   --grayblackheader: rgb(17, 17, 17);
+  --error-red: #E42C2C;
 }
 
 body{
   background-color: whitesmoke;
   width: 100vw;
   overflow-x: hidden;
+  padding-bottom: 100px;
 }
 
 
@@ -47,7 +49,14 @@ body{
   font-family: 'inter', sans-serif;
   color: var(--grayblack);
 }
+.content-title{
+  margin-top: 60px;
+}
 
 input:focus{
   outline: none !important;
+}
+
+label{
+  font-family: 'inter',sans-serif;
 }

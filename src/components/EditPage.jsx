@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'; //using cloud editor
+import '@tinymce/tinymce-react'
 
 import "./css/editpage.css"
 
@@ -8,6 +9,7 @@ function Editpage() {
   
   let [postBgColor,setpostBgColor] = useState("#215F99")
   let [postTextColor,setPostTextColor] = useState("#FC4F00")
+  let [postContent,setPostContent] = useState("")
 
   function changePrevText(color){
     setPostTextColor(color)
@@ -19,6 +21,13 @@ function Editpage() {
     document.querySelector(".bg-color-selected").classList.remove("bg-color-selected")
     document.getElementById(color).classList.add("bg-color-selected")
   }
+
+  function getFormContent(){
+  }
+
+  useEffect(()=>{
+    console.log(postContent)
+  },[postContent])
 
   return (
     <div className="edit">
@@ -49,9 +58,9 @@ function Editpage() {
                   <div className="color-circle" id="#7E7E7E" onClick={()=>{changePrevText("#7E7E7E")}} style={{backgroundColor: "#7E7E7E"}} />
                   <div className="color-circle" id="#BBC7CE" onClick={()=>{changePrevText("#BBC7CE")}} style={{backgroundColor: "#BBC7CE"}} />
                   <div className="color-circle" id="#EC9F9F" onClick={()=>{changePrevText("#EC9F9F")}} style={{backgroundColor: "#EC9F9F"}} />
-                  <div className="color-circle text-color-selected" id="#8F2B2B" onClick={()=>{changePrevText("#8F2B2B")}} style={{backgroundColor: "#8F2B2B"}} />
+                  <div className="color-circle" id="#8F2B2B" onClick={()=>{changePrevText("#8F2B2B")}} style={{backgroundColor: "#8F2B2B"}} />
                   <div className="color-circle" id="#4DB1D0" onClick={()=>{changePrevText("#4DB1D0")}} style={{backgroundColor: "#4DB1D0"}} />
-                  <div className="color-circle" id="#FC4F00" onClick={()=>{changePrevText("#FC4F00")}} style={{backgroundColor: "#FC4F00"}} />
+                  <div className="color-circle text-color-selected" id="#FC4F00" onClick={()=>{changePrevText("#FC4F00")}} style={{backgroundColor: "#FC4F00"}} />
                 </div>
               </div>
             </div>
@@ -86,6 +95,7 @@ function Editpage() {
           apiKey = '1f17x63gnuprnfm348hzhqwrl8zb92kkuq49wkpealoey6ac'
           onInit={console}
           initialValue="<p>Start Typing Your Post Here!</p>"
+          onEditorChange={(editorValue)=>{setPostContent(editorValue)}}
           init={{
             height: 600,
             menubar: false,
@@ -100,6 +110,7 @@ function Editpage() {
               'removeformat | help',
             content_style: 'body { font-family:Inter,Arial,sans-serif; font-size:14px }'
         }} />
+        <button onClick={getFormContent}>Submit</button>
     </div>
   )
 }

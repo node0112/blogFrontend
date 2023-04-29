@@ -4,7 +4,7 @@ import './reset.css'
 import Header from './components/Header'
 import Home from './components/Home'
 import axios from 'axios'
-import Sidebar from './components/sidebar'
+import postAPI from './components/postAPI'
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import Editpage from './components/EditPage'
 import LoginPage from './components/LoginPage'
@@ -14,8 +14,6 @@ function App() {
   const [selected, setSelected] = useState("home")
 
   let posts
-
-  axios.defaults.baseURL = "https://itypebackend.onrender.com/"
   
   useEffect(()=>{
     //hide default loading screen after getting all posts
@@ -24,7 +22,7 @@ function App() {
   },[Home])
 
   async function fetchPosts(){
-    axios.get("home")
+    postAPI.get("home")
     .then(res=>{posts =  res.data.posts; console.log(posts);insertPosts()})
     .catch(err =>{return err  }) //handle error 
   }

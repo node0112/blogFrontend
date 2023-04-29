@@ -51,6 +51,8 @@ body{
 }
 .content-title{
   margin-top: 60px;
+  z-index: 2;
+  position: relative;
 }
 
 input:focus{
@@ -59,4 +61,11 @@ input:focus{
 
 label{
   font-family: 'inter',sans-serif;
+}
+
+.error{
+  color: var(--error-red);
+  font-family: 'inter', sans-serif;
+  transition: all 1s;
+  margin-bottom: 10px;
 }

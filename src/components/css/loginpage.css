@@ -20,6 +20,11 @@
     justify-content: space-between;
     margin-top: 56px;
 }
+.form-button:hover{
+    background-color: var(--darkgray);
+    color: var(--grayblack);
+    transition: all 0.3s;
+}
 .form-button{
     width: 174px;
     height: 48px;
@@ -28,4 +33,21 @@
     background-color: var(--grayblack);
     font-size: 20px;
     border: none;
+}
+
+/*account page signed in css*/
+
+.top-acc-container{
+
+}
+
+.acc-stat-container{
+    position: fixed;
+    right: 50px;
+    top: 275px;
+    width: 250px;
+}
+
+.account-info{
+    gap: 7px;
 }

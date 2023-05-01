@@ -6,7 +6,7 @@ import Loading from './Loading'
 
 function LoginPage() {
   
-  const [sigednIn,setSignedIn] = useState(false)
+  const [sigednIn,setSignedIn] = useState(true)
   const [email, setEmail ] = useState("")
   const [password, setPassword ] = useState("")
   const [username, setUsername] = useState("")
@@ -14,7 +14,13 @@ function LoginPage() {
 
   useEffect(() => {
     let accessToken = localStorage.getItem("AT")
-    accessToken ? console.log(accessToken) : null
+    accessToken ? setSignedIn(true) : null
+
+    //check if user is signed in
+    let lsEmail = localStorage.getItem('email')
+    let lsUsername = localStorage.getItem('username')
+    lsEmail ? setEmail(lsEmail) : null
+    lsUsername ? setUsername(lsUsername) : null
     //check if user is signed in by looking if cookies are stored
   }, [])
 
@@ -48,13 +54,20 @@ function LoginPage() {
         email
       }
       authAPI.post('/signup' , signupDetails).then(res => {
-        const errors = res.data.errors
+        let errors = []
+        if(res.data.errors){
+          errors = res.data.errors
+        }
         if(errors.length > 0 ){
           let errorMessages = [ ]
           errors.forEach(error =>{
             errorMessages.push(error.msg)
           })
           showErrors(errorMessages)
+        }
+        else{        
+          saveLocal(res.data)
+          setSignedIn(true)
         }
       })
       .catch(err =>{
@@ -72,13 +85,20 @@ function LoginPage() {
       }
       authAPI.post('/login' , loginDetails).then(res => {
         const errors = res.data.errors
-        console.log(res)
-        if(errors.length > 0 ){
+        const data = res.data
+        setLoading(false)
+        if(errors.length > 0 ){ //handle all the errors
           let errorMessages = [ ]
           errors.forEach(error =>{
             errorMessages.push(error.msg)
           })
           showErrors(errorMessages)
+        }
+        //else save in local storage\
+        else{
+          saveLocal(data)
+          //set loged in to true so that sign up form gets removed
+          setSignedIn(true)
         }
       })
       .catch(err =>{
@@ -88,6 +108,15 @@ function LoginPage() {
     }
   } 
 
+  function saveLocal(data){
+    let refreshToken = data.refreshToken
+    let accessToken = data.accessToken
+    let user = data.user
+    localStorage.setItem('RT', refreshToken)
+    localStorage.setItem('AT', accessToken)
+    localStorage.setItem('email', user.email )
+    localStorage.setItem('username', user.username)
+  }
   
   async function showErrors(errors){
     setLoading(false)
@@ -109,7 +138,8 @@ function LoginPage() {
   return (
     <div>
        <div className='content-title'>Account</div>
-      <Loading loading={loading} />
+       <Loading loading={loading} />
+       {!sigednIn ? 
        <div className="login-box flex flex column vertical">
         <div className="small-heading" style={{marginBottom: "45px"}}>Log-in Or Sign-up</div>
         <form className="login-form flex column horizontal">
@@ -124,7 +154,32 @@ function LoginPage() {
             <button type='button' className='form-button' onClick={signup}>Sign Up</button>
           </div>
         </form>
+       </div>
+       :
+      <div className="account-container" style={{marginLeft: "7px"}}>
+        <div className="top-acc-container flex column" >
+          <div className="small-heading" style={{marginBottom:"25px"}} >Info</div>
+          <div className="account-info flex column">
+            <div className="smaller-heading flex" style={{gap: '10px'}}>Username: <div>{username}</div></div>
+            <div className="smaller-heading flex" style={{gap: '10px'}}>Email: <div>{email}</div></div>
+            <div className="button-container flex" style={{marginBottom: '50px',gap: '10px',marginTop: '10px' ,width: 'max-content'}}>
+            <button type='button' className='form-button cursor' >Sign Out</button>
+            <button type='button' className='form-button cursor' >Delete Account</button>
+          </div>
+          </div>
         </div>
+        <div className="acc-bottom-container">
+          <div className="small-heading" style={{marginBottom:"25px"}} >Posts</div>
+        </div>
+        <div className="acc-stat-container defont"> 
+        <div className="small-heading" style={{marginBottom:"25px",marginTop:'-25px'}} >Stats</div>
+          <div className="acc-stats flex">
+            <div className="stat-name">Likes Received: </div>
+            <div className="stat-value">0</div>
+          </div>
+        </div>
+      </div>
+      }
     </div>
   )
 }

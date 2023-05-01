@@ -49,6 +49,11 @@ body{
   font-family: 'inter', sans-serif;
   color: var(--grayblack);
 }
+.smaller-heading{
+  font-size: 20px;
+  font-family: 'inter', sans-serif;
+  color: var(--grayblack);
+}
 .content-title{
   margin-top: 60px;
   z-index: 2;

@@ -25,10 +25,6 @@ function Editpage() {
   function getFormContent(){
   }
 
-  useEffect(()=>{
-    console.log(postContent)
-  },[postContent])
-
   return (
     <div className="edit">
         <div className='content-title' style={{marginTop: "60px"}}>Create A Post</div>

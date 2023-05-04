@@ -118,6 +118,7 @@
 .post-title{
     font-size: 25px;
     margin-bottom: 5px;
+    max-height: 100px;
 }
 .post-author{
     font-size: 14px;

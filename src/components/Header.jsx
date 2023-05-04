@@ -55,6 +55,9 @@ function Header({selected,setSelected}) {
   if(path === ""){ //special case for home since home is the default address and it's path is empty
     path = ('home')
   }
+  if(path === "post"){
+    path = ('home')
+  }
   setSelected(path) 
   }, [])
   

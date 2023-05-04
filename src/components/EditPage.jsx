@@ -51,7 +51,9 @@ function Editpage() {
         else{
           console.log(data.errors)
         }
-    }
+      }
+      let newPostLink = data.postId
+      //navigate to new page
     }).catch(err =>{
       console.log(err)
     })

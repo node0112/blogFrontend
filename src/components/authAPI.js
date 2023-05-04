@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function refreshAcessToken(){
     const refreshToken = localStorage.getItem("RT")
@@ -13,7 +12,7 @@ function refreshAcessToken(){
     })
     .catch(err=>{ //if error than the refresh token has expired
         console.log(err)
-        //signOut()
+        signOut()
     })
 }
 

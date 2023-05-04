@@ -2,25 +2,31 @@ import React, { useEffect, useState } from 'react'
 import authAPI from './authAPI'
 import './css/loginpage.css'
 import Loading from './Loading'
+import '../components/postAPI'
+import postAPI, { setAccessToken } from '../components/postAPI'
 
 
 function LoginPage() {
   
-  const [sigednIn,setSignedIn] = useState(true)
+  const [signedIn,setSignedIn] = useState(true)
   const [email, setEmail ] = useState("")
   const [password, setPassword ] = useState("")
   const [username, setUsername] = useState("")
+  const [userID,setUserID] = useState('')
   const [loading,setLoading] = useState(false)
 
   useEffect(() => {
     let accessToken = localStorage.getItem("AT")
-    accessToken ? setSignedIn(true) : null
-
-    //check if user is signed in
     let lsEmail = localStorage.getItem('email')
     let lsUsername = localStorage.getItem('username')
+    let lsUserID = localStorage.getItem('userID')
     lsEmail ? setEmail(lsEmail) : null
     lsUsername ? setUsername(lsUsername) : null
+    lsUserID ? setUserID(lsUserID) : null
+  
+    //check if user is signed in
+    accessToken ? setSignedIn(true) : setSignedIn(false)
+
     //check if user is signed in by looking if cookies are stored
   }, [])
 
@@ -107,16 +113,26 @@ function LoginPage() {
       })
     }
   } 
+  function signout(){
+    localStorage.clear() //delete all user data from ls and set all variables to default state
+    setSignedIn(false)
+    setAccessToken()
+  }
 
   function saveLocal(data){
+    console.log(data)
     let refreshToken = data.refreshToken
     let accessToken = data.accessToken
     let user = data.user
+    let userID = data.user.id
     localStorage.setItem('RT', refreshToken)
     localStorage.setItem('AT', accessToken)
     localStorage.setItem('email', user.email )
     localStorage.setItem('username', user.username)
+    localStorage.setItem('userID',userID)
+    setAccessToken() //set accesstoken to current data
   }
+
   
   async function showErrors(errors){
     setLoading(false)
@@ -135,11 +151,20 @@ function LoginPage() {
     });
    
   }
+
+  useEffect(() => {
+    //fetch user info from api if user is signed in
+    if(signedIn){
+      // const posts = postAPI.get('/user/'+userID)
+      //fetch posts for user  
+    }
+  }, [signedIn])
+
   return (
     <div>
        <div className='content-title'>Account</div>
        <Loading loading={loading} />
-       {!sigednIn ? 
+       {!signedIn ? 
        <div className="login-box flex flex column vertical">
         <div className="small-heading" style={{marginBottom: "45px"}}>Log-in Or Sign-up</div>
         <form className="login-form flex column horizontal">
@@ -163,7 +188,7 @@ function LoginPage() {
             <div className="smaller-heading flex" style={{gap: '10px'}}>Username: <div>{username}</div></div>
             <div className="smaller-heading flex" style={{gap: '10px'}}>Email: <div>{email}</div></div>
             <div className="button-container flex" style={{marginBottom: '50px',gap: '10px',marginTop: '10px' ,width: 'max-content'}}>
-            <button type='button' className='form-button cursor' >Sign Out</button>
+            <button type='button' className='form-button cursor' onClick={signout} >Sign Out</button>
             <button type='button' className='form-button cursor' >Delete Account</button>
           </div>
           </div>

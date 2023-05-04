@@ -3,6 +3,8 @@ import { Editor } from '@tinymce/tinymce-react'; //using cloud editor
 import '@tinymce/tinymce-react'
 
 import "./css/editpage.css"
+import postAPI from './postAPI';
+import { refreshAcessToken } from './authAPI';
 
 function Editpage() {
   
@@ -10,6 +12,9 @@ function Editpage() {
   let [postBgColor,setpostBgColor] = useState("#215F99")
   let [postTextColor,setPostTextColor] = useState("#FC4F00")
   let [postContent,setPostContent] = useState("")
+  let [postTitle,setPostTitle] = useState("")
+  let [draftMode,setDraftMode] = useState(false)
+
 
   function changePrevText(color){
     setPostTextColor(color)
@@ -22,7 +27,34 @@ function Editpage() {
     document.getElementById(color).classList.add("bg-color-selected")
   }
 
-  function getFormContent(){
+  async function postForm(){
+    let userid = localStorage.getItem('userID')
+    let date = new Date()
+    date = date.toISOString()
+    let postJSON = {
+      title: postTitle,
+      user: userid,
+      date: date,
+      likes: 0,
+      content: postContent,
+      draft: draftMode,
+      backgroundColor: postBgColor,
+      textColor: postTextColor
+    }
+    postAPI.post('/post/'+userid+'/post', postJSON).then(async newPost => {
+      let data = newPost.data
+      console.log(data)
+      if(data.errors){
+        if(data.errors[0] === 'jwt expired'){
+          refreshAcessToken() //get new access token
+        }
+        else{
+          console.log(data.errors)
+        }
+    }
+    }).catch(err =>{
+      console.log(err)
+    })
   }
 
   return (
@@ -32,7 +64,7 @@ function Editpage() {
           <div className="options-container" style={{marginTop: '45px'}}>
             <div className="flex column" id='title-editor'>
               <div className="small-heading">Post Title</div>
-              <input type="text" className="title-input" />
+              <input type="text" className="title-input" onChange={e=>{setPostTitle(e.target.value)}} />
             </div>
             <div className="flex " id='color-picker'>
               <div className="color-picker flex column" id='post-bg-color'>
@@ -106,7 +138,7 @@ function Editpage() {
               'removeformat | help',
             content_style: 'body { font-family:Inter,Arial,sans-serif; font-size:14px }'
         }} />
-        <button onClick={getFormContent}>Submit</button>
+        <button onClick={postForm}>Submit</button>
     </div>
   )
 }

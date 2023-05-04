@@ -49,3 +49,24 @@
         display: none !important;
     }
 }
+
+
+.tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    height: max-content;
+    background-color: black;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    bottom: -40px;
+    z-index: 1;
+    gap: 7px;
+  }
+
+#account:hover .tooltiptext {
+    visibility: visible;
+  }

@@ -1,8 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './css/header.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 function Header({selected,setSelected}) {
+  const [email,setEmail] = useState('')
+  const [username,setUsername] = useState('')
+  const [tooltip,setTooltip] = useState(false)
 
   function changeColor(){
     let header = document.querySelector(".header")
@@ -27,6 +30,18 @@ function Header({selected,setSelected}) {
   }
 
   useEffect(updateHeader,[selected])
+
+  useEffect(()=>{
+    //get user from ls if signed in
+    let lsemail = localStorage.getItem('email')
+    let lsUsername = localStorage.getItem('username')
+    if(lsemail){
+        setTooltip(true)
+        setEmail(lsemail)
+        setUsername(lsUsername)
+    }
+
+  },[])
   
   const navigate = useNavigate()
   const location = useLocation()
@@ -50,7 +65,9 @@ function Header({selected,setSelected}) {
           <div className='header-link selected cursor' id='home' onClick={()=>{navigate("/"); setSelected("home")}}>Home</div>
           <div className='header-link cursor' id='create' onClick={()=>{navigate("/create"); setSelected("create")}}>Create</div>
           <div className='header-link cursor'  id="drafts" onClick={()=>{navigate("/drafts");setSelected("drafts")}}>Drafts</div>
-          <div className='header-link cursor'  id="account" onClick={()=>{navigate("/account");setSelected("account")}}>Acc</div>
+          <div className='header-link cursor'  id="account" onClick={()=>{navigate("/account");setSelected("account")}}>Acc
+            {tooltip ? <span class="tooltiptext flex column"><div>{email}</div><div>{username}</div></span> : null}
+          </div>
         </div>
         <div className="head-right">
           <input type="text" className="searchbox" placeholder='Search A Post'/>

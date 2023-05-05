@@ -1,0 +1,31 @@
+
+.main-post-title{
+    font-size: 40px;
+    font-weight: 500;
+    max-width: 1077px;
+    margin-top: 60px;
+}
+
+
+.post-info-container{
+    justify-content: space-between;
+    position: relative;
+}
+
+.post-info-container{
+    width: 900px;
+    margin-bottom: 110px;
+}
+.main-post-author{
+    font-size: 30px;
+    font-weight: 500;
+}
+.sep-line{
+    position: absolute;
+    bottom: -40px;
+    height: 7px;
+    background-color: var(--grayblack);
+    padding: auto;
+    width: 900px;
+    border-radius: 5px;
+}

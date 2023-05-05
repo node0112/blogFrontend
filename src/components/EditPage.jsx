@@ -13,8 +13,13 @@ function Editpage() {
   let [postTextColor,setPostTextColor] = useState("#FC4F00")
   let [postContent,setPostContent] = useState("")
   let [postTitle,setPostTitle] = useState("")
+  let [author,setAuthor] = useState("")
   let [draftMode,setDraftMode] = useState(false)
 
+  useEffect(()=>{
+    let LSauthor = localStorage.getItem('username')
+    setAuthor(LSauthor)
+  })
 
   function changePrevText(color){
     setPostTextColor(color)
@@ -34,6 +39,7 @@ function Editpage() {
     let postJSON = {
       title: postTitle,
       user: userid,
+      author,
       date: date,
       likes: 0,
       content: postContent,

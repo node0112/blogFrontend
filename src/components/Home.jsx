@@ -7,6 +7,8 @@ import PostPage from './PostPage';
 function Home({posts,setPostID}) {  
 
   const navigate = useNavigate()
+
+
   function insertPosts(){ //post constructors
     posts.forEach(post => {
       //insert elements inside the dom
@@ -65,7 +67,6 @@ function Home({posts,setPostID}) {
   }
 
   useEffect(() => {
-    console.log(posts)
     insertPosts()
   }, [posts])
   

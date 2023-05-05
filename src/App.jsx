@@ -8,13 +8,15 @@ import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import Editpage from './components/EditPage'
 import LoginPage from './components/LoginPage'
 import PostPage from './components/PostPage'
+import Loading from './components/Loading'
 
 function App() {
 
   const [selected, setSelected] = useState("home")
   const[ posts,setPosts] = useState([])
   const [postID, setPostID] = useState('')
-  
+  const [loading,setLoading] = useState(true)
+
   useEffect(()=>{
     //hide default loading screen after getting all posts
     //and inserting them in the DOM list
@@ -22,14 +24,20 @@ function App() {
   },[Home])
 
   async function fetchPosts(){
+    setLoading(true)
     postAPI.get("home")
-    .then(res=>{setPosts(res.data.posts); console.log(posts)})
+    .then(res=>{
+      setPosts(res.data.posts); 
+      console.log(posts)
+      setLoading(false)
+    })
     .catch(err =>{return err  }) //handle error 
   }
 
   
   return (
     <div className="App">
+       <Loading loading={loading} />
       <BrowserRouter>
         <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
         <Header selected={selected} setSelected={setSelected} />

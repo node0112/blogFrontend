@@ -5,6 +5,7 @@ import '@tinymce/tinymce-react'
 import "./css/editpage.css"
 import postAPI from './postAPI';
 import { refreshAcessToken } from './authAPI';
+import Loading from './Loading';
 
 function Editpage() {
   
@@ -15,6 +16,7 @@ function Editpage() {
   let [postTitle,setPostTitle] = useState("")
   let [author,setAuthor] = useState("")
   let [draftMode,setDraftMode] = useState(false)
+  const [loading,setLoading] = useState(true)
 
   useEffect(()=>{
     let LSauthor = localStorage.getItem('username')
@@ -47,7 +49,9 @@ function Editpage() {
       backgroundColor: postBgColor,
       textColor: postTextColor
     }
+    setLoading(true)
     postAPI.post('/post/'+userid+'/post', postJSON).then(async newPost => {
+      setLoading(false)
       let data = newPost.data
       console.log(data)
       if(data.errors){
@@ -61,12 +65,14 @@ function Editpage() {
       let newPostLink = data.postId
       //navigate to new page
     }).catch(err =>{
+      setLoading(false)
       console.log(err)
     })
   }
 
   return (
     <div className="edit">
+      <Loading loading={loading} />
         <div className='content-title' style={{marginTop: "60px"}}>Create A Post</div>
         <div className="edit-container flex" style={{marginLeft: "7px", marginBottom: "100px",  gap: '50px'}}>
           <div className="options-container" style={{marginTop: '45px'}}>
@@ -129,7 +135,7 @@ function Editpage() {
         </div>
         <Editor //tinymce cloud editor
           apiKey = '1f17x63gnuprnfm348hzhqwrl8zb92kkuq49wkpealoey6ac'
-          onInit={console}
+          onInit={()=>{setLoading(false)}}
           initialValue="<p>Start Typing Your Post Here!</p>"
           onEditorChange={(editorValue)=>{setPostContent(editorValue)}}
           init={{

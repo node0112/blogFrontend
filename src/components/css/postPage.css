@@ -14,10 +14,11 @@
 
 .post-info-container{
     width: 900px;
-    margin-bottom: 110px;
+    margin-bottom: 45px;
+    margin-top: 5px;
 }
 .main-post-author{
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 500;
 }
 .sep-line{
@@ -28,4 +29,8 @@
     padding: auto;
     width: 900px;
     border-radius: 5px;
+}
+
+.date{
+    margin-bottom: 35px;
 }

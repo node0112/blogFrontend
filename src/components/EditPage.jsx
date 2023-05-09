@@ -152,6 +152,8 @@ function Editpage() {
               'removeformat | help',
             content_style: 'body { font-family:Inter,Arial,sans-serif; font-size:14px }'
         }} />
+        <label htmlFor="draft">Draft</label>
+        <input id='draft' type='checkbox' onChange={e=>{ e.target.checked ? setDraftMode(true) : setDraftMode(false)}} value={'draft'} />
         <button onClick={postForm}>Submit</button>
     </div>
   )

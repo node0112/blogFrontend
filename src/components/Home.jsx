@@ -1,73 +1,11 @@
 import React, { useEffect } from 'react'
 import './css/home.css'
-import { useNavigate } from 'react-router-dom';
-import PostPage from './PostPage';
 
 
-function Home({posts,setPostID}) {  
-
-  const navigate = useNavigate()
-
-
-  function insertPosts(){ //post constructors
-    posts.forEach(post => {
-      //insert elements inside the dom
-      let postContainer = document.querySelector('.posts-container')
-      const newPost = document.createElement('div')
-      newPost.className = 'post flex column'
-      let bgColor = post.backgroundColor
-      let textColor = post.textColor
-      newPost.style.backgroundColor = bgColor
-      newPost.style.color = textColor
-
-      const postTopContainer = document.createElement('div')
-      postTopContainer.className = 'post-top-container'
-      const postBottomContainer = document.createElement('div')
-      postBottomContainer.className = 'post-bottom-container'
-
-      const postTitle = document.createElement('div')
-      postTitle.className = 'post-title'
-      postTitle.textContent = post.title
-      
-      const postAuthor = document.createElement('div')
-      postAuthor.className = 'post-author'
-      postAuthor.textContent = post.author
-
-      const postContent = document.createElement('div')
-      postContent.className = 'post-content'
-      postContent.textContent = post.content
-
-      const postDate = document.createElement('div')
-      postDate.className = 'post-date'
-      postDate.textContent = (post.date).substring(0,10)
-
-      const postID = post._id 
-      newPost.id = postID 
-
-      newPost.addEventListener('click', ()=>{
-        console.log(newPost.id)
-        let id = newPost.id
-        setPostID(id)
-        navigate('/post')
-      })
-
-
-      //add everything to respective containers
-      postTopContainer.appendChild(postTitle)
-      postTopContainer.appendChild(postAuthor)
-      postTopContainer.appendChild(postContent)
-
-      postBottomContainer.appendChild(postDate)
-
-      newPost.appendChild(postTopContainer)
-      newPost.appendChild(postBottomContainer)
-
-      postContainer.appendChild(newPost)
-    });   
-  }
-
+function Home({posts,setPostID,insertPosts}) {  
+  
   useEffect(() => {
-    insertPosts()
+    insertPosts(posts)
   }, [posts])
   
 

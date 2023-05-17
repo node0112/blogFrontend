@@ -6,13 +6,16 @@ import "./css/editpage.css"
 import postAPI from './postAPI';
 import { refreshAcessToken } from './authAPI';
 import Loading from './Loading';
+import { useNavigate } from 'react-router-dom';
 
-function Editpage() {
+function Editpage({setPostID}) {
   
+  const navigate = useNavigate()
   
   let [postBgColor,setpostBgColor] = useState("#215F99")
   let [postTextColor,setPostTextColor] = useState("#FC4F00")
   let [postContent,setPostContent] = useState("")
+  let [summary, setPostSummary] = useState('')
   let [postTitle,setPostTitle] = useState("")
   let [author,setAuthor] = useState("")
   let [draftMode,setDraftMode] = useState(false)
@@ -21,7 +24,16 @@ function Editpage() {
   useEffect(()=>{
     let LSauthor = localStorage.getItem('username')
     setAuthor(LSauthor)
+    if(!LSauthor){
+      console.log(LSauthor)
+      localStorage.clear()
+      navigate('/account')
+      location.reload()
+    }
   })
+
+  
+
 
   function changePrevText(color){
     setPostTextColor(color)
@@ -45,6 +57,7 @@ function Editpage() {
       date: date,
       likes: 0,
       content: postContent,
+      summary,
       draft: draftMode,
       backgroundColor: postBgColor,
       textColor: postTextColor
@@ -62,13 +75,17 @@ function Editpage() {
           console.log(data.errors)
         }
       }
-      let newPostLink = data.postId
+      let newPostID = data.postId
+      setPostID(newPostID)
+      navigate('/post')
       //navigate to new page
     }).catch(err =>{
       setLoading(false)
       console.log(err)
     })
+   
   }
+
 
   return (
     <div className="edit">
@@ -134,17 +151,23 @@ function Editpage() {
           </div>
         </div>
         <Editor //tinymce cloud editor
+          id='editor'
           apiKey = '1f17x63gnuprnfm348hzhqwrl8zb92kkuq49wkpealoey6ac'
           onInit={()=>{setLoading(false)}}
-          initialValue="<p>Start Typing Your Post Here!</p>"
-          onEditorChange={(editorValue)=>{setPostContent(editorValue)}}
+          initialValue="<h2>Start Typing Your Post Here</h2>"
+          onEditorChange={(editorValue, editor)=>{
+            setPostContent(editorValue) //set html value to post contnet
+            let postSummary = editor.getContent({format: 'text'})
+            postSummary = postSummary.substring(0,180)
+            setPostSummary(postSummary) //save content as text for preview on homepage
+          }}
           init={{
             height: 600,
             menubar: false,
             plugins: [
               'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
               'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-              'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+              'insertdatetime', 'media', 'table', 'code', 'wordcount'
             ],
             toolbar: 'undo redo | blocks | ' +
               'bold italic forecolor | alignleft aligncenter ' +

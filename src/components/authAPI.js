@@ -1,7 +1,8 @@
 import axios from "axios";
+import useState from "react";
 
 function refreshAcessToken(){
-    const refreshToken = localStorage.getItem("RT")
+    const refreshToken = 'bearer ' + localStorage.getItem("RT")
     let reqBody = {
         refreshToken
     }
@@ -9,10 +10,12 @@ function refreshAcessToken(){
         const data = token.data
         const accessToken = data.accessToken
         localStorage.setItem('AT',accessToken)
+        return ''
     })
-    .catch(err=>{ //if error than the refresh token has expired
+    .catch(err=>{ //if error then the refresh token has expired
         console.log(err)
         signOut()
+        return('signout')
     })
 }
 

@@ -25,7 +25,7 @@ function LoginPage() {
     lsUserID ? setUserID(lsUserID) : null
   
     //check if user is signed in
-    accessToken ? setSignedIn(true) : setSignedIn(false)
+    lsEmail ? setSignedIn(true) : setSignedIn(false)
 
     //check if user is signed in by looking if cookies are stored
   }, [])
@@ -117,10 +117,12 @@ function LoginPage() {
     localStorage.clear() //delete all user data from ls and set all variables to default state
     setSignedIn(false)
     setAccessToken()
+    setEmail('')
+    setUserID('')
+    setUsername('')
   }
 
   function saveLocal(data){
-    console.log(data)
     let refreshToken = data.refreshToken
     let accessToken = data.accessToken
     let user = data.user

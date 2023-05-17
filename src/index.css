@@ -10,8 +10,8 @@ body{
   background-color: whitesmoke;
   width: 100vw;
   overflow-x: hidden;
-  padding-bottom: 100px;
   font-family: 'inter', sans-serif;
+  transition: all 0.8s;
 }
 
 

@@ -11,7 +11,7 @@ function PostPage({postID}) {
 
   const [parsedPost,setParsedPost] = useState('')
   const [postTitle,setPostTitle] = useState('')
-  const [postAuthor,setPostAuthor] = useState('')
+  const [postAuthor,setPostAuthor] = useState('Error, retrying') //default message incase post fetch fails
   const [postLikes,setLikes] = useState('')
   const [postDate,setPostDate] = useState('')
   const [loading,setLoading] = useState(false)
@@ -20,8 +20,10 @@ function PostPage({postID}) {
 
   useEffect(()=>{
       fetchPost()
+      
   },[])
-  function fetchPost(){
+
+  async function fetchPost(){
     if(postID === '' ){
       navigate('/') //incase a user stumbles here bby accident
     }
@@ -31,25 +33,38 @@ function PostPage({postID}) {
       let errors = []
       if(data.errors) errors = data.errors;
       setLoading(false)
-      if(errors.length > 0){ //refresh token if it has expired
+      if(errors.length > 0){ //use refresh token if AT expired
         if(errors[0] === 'jwt expired' || errors[0] === 'jwt malformed'){ //if errors in the token
-          refreshAcessToken().then(fetchPost)
+          let error = refreshAcessToken(fetchPost)
+          console.log(error)
+          if(error == 'signout'){
+            navigate('/account')
+            console.log('signout')
+            return
+            //location.reload()
+          }
         }
       }
       console.log(data)
       if(data.post){
         parsePost(data.post)
+        let height 
+        setTimeout(() => {
+          height = document.querySelector('.main-post').scrollHeight + 140
+          document.querySelector('#post-bg').style.height = height + 'px'
+        }, 200);
+        document.querySelector('#post-bg').style.backgroundColor="black"
       }
     })
     .catch(err=>{
-      console.log(err)
+      console.log(err.message)
     })
   }
 
   function parsePost(post){
     let parsedHtml = parse(post.content)
     setPostTitle(post.title)
-    setPostAuthor(post.author)
+    setPostAuthor("By: "+ post.author)
     setLikes(post.likes)
     setPostDate(post.date.substring(0,10))
     setParsedPost(parsedHtml)
@@ -61,8 +76,9 @@ function PostPage({postID}) {
     <div className='main-post flex column'>
       <Loading loading={loading} />
       <div className="main-post-title">{postTitle}</div>
+      <div id="post-bg"></div>
       <div className="post-info-container flex">
-        <div className="main-post-author">By {postAuthor}</div>
+        <div className="main-post-author">{postAuthor}</div>
         <div className="main-stat-container">
           <div className="likes">{postLikes}</div>
           <div className="comments"></div>
@@ -74,5 +90,6 @@ function PostPage({postID}) {
     </div>
   )
 }
+
 
 export default PostPage

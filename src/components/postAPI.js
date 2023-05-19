@@ -14,7 +14,6 @@ export function refreshAcessToken(fetch){
         user: userEmail
     }
     axios.post('https://itypeauth.onrender.com/auth/accessToken',reqBody).then(token =>{
-        console.log(token)
         const data = token.data
         const accessToken = data.accessToken
         localStorage.setItem('AT',accessToken) //update current token in LS

@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import './css/postPage.css'
 import Loading from './Loading';
 
-function PostPage({postID}) {
+function PostPage({postID, setDraftMode}) {
   let navigate = useNavigate()
 
   const [parsedPost,setParsedPost] = useState('')
@@ -16,11 +16,12 @@ function PostPage({postID}) {
   const [postDate,setPostDate] = useState('')
   const [loading,setLoading] = useState(false)
 
+  const[postEdit, setPostEdit] = useState(false)
+
   const [postComments,setPostComments] = useState('')
 
   useEffect(()=>{
-      fetchPost()
-      
+      fetchPost() //get post from server on inital render
   },[])
 
   async function fetchPost(){
@@ -69,13 +70,25 @@ function PostPage({postID}) {
     setPostDate(post.date.substring(0,10))
     setParsedPost(parsedHtml)
     document.querySelector('.main-post-author').style.color = post.textColor
+
+    //if post's draft is true then render edit buttons and then set it change draft mode and render edit page with draft mode as true
+
+    if(post.draft){
+      setPostEdit(true)
+      //render edit button
+    }
   }
 
+  function setEditPost(){
+    setDraftMode(true)
+    navigate('/create')
+  }
 
   return (
     <div className='main-post flex column'>
       <Loading loading={loading} />
       <div className="main-post-title">{postTitle}</div>
+      { postEdit ? <div className="material-icons cursor"  onClick={setEditPost} id='edit-icon'>edit_note</div> : null}
       <div id="post-bg"></div>
       <div className="post-info-container flex">
         <div className="main-post-author">{postAuthor}</div>

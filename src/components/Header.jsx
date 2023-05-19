@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './css/header.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-function Header({selected,setSelected}) {
+function Header({selected,setSelected, setDraftMode}) {
   const [email,setEmail] = useState('')
   const [username,setUsername] = useState('')
   const [tooltip,setTooltip] = useState(false)
@@ -65,12 +65,12 @@ function Header({selected,setSelected}) {
   return (
     <div className="header flex vertical defont">
         <div className='head-left defont flex '>
-          <div className='header-link selected cursor' id='home' onClick={()=>{navigate("/"); setSelected("home")}}>Home</div>
-          <div className='header-link cursor' id='create' onClick={()=>{navigate("/create"); setSelected("create")}}>Create</div>
+          <div className='header-link selected cursor' id='home' onClick={()=>{navigate("/"); setSelected("home"); setDraftMode(false)}}>Home</div>
+          <div className='header-link cursor' id='create' onClick={()=>{navigate("/create"); setSelected("create");  setDraftMode(false) }}>Create</div>
           <div className='header-link cursor'  id="drafts" onClick={()=>{navigate("/drafts");setSelected("drafts")}}>Drafts</div>
-          <div className='header-link cursor'  id="account" onClick={()=>{navigate("/account");setSelected("account")}}>Acc
-            {tooltip ? <span class="tooltiptext flex column"><div>{email}</div><div>{username}</div></span> : null}
+          <div className='header-link material-icons cursor' style={{fontSize: "25px"}}  id="account" onClick={()=>{navigate("/account");setSelected("account");  setDraftMode(false) }}>person
           </div>
+          {tooltip ? <span class="tooltiptext flex column"><div>{email}</div><div>{username}</div></span> : null}
         </div>
         <div className="head-right">
           <input type="text" className="searchbox" placeholder='Search A Post'/>

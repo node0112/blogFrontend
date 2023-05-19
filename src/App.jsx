@@ -83,10 +83,6 @@ function App() {
       const postID = post._id 
       newPost.id = postID 
 
-      if(post.draft){
-        console.log(true)
-      }
-
       newPost.addEventListener('click', ()=>{
         console.log(newPost.id)
         let id = newPost.id
@@ -120,13 +116,13 @@ function App() {
     <div className="App">
       <Loading loading={loading} />
         <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
-        <Header selected={selected} setSelected={setSelected} />
+        <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} />
         <div className='content-container flex column'>
             <Routes>
             <Route path = "/"  element = {<Home posts={posts} setPostID = {setPostID}  insertPosts={insertPosts} />} />
-            <Route path = "/create"  element = {<Editpage type={"new"} setPostID={setPostID} />} />
+            <Route path = "/create"  element = {<Editpage type={"new"} setPostID={setPostID} postId={postID} draftMode={draftMode}/>} />
             <Route path = "/account"  element = {<LoginPage />} />
-            <Route path = "/post"  element = {<PostPage postID={postID} draftMode={draftMode} />} />
+            <Route path = "/post"  element = {<PostPage postID={postID} draftMode={draftMode} setDraftMode={setDraftMode} />} />
             <Route path = "/drafts"  element = {<Draft draftPosts={draftPosts} insertPosts={insertPosts}  setPostID = {setPostID} />} />
             </Routes>
         </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'; //using cloud editor
+import parse from 'html-react-parser';
 import '@tinymce/tinymce-react'
 
 import "./css/editpage.css"
@@ -8,20 +9,21 @@ import { refreshAcessToken } from './authAPI';
 import Loading from './Loading';
 import { useNavigate } from 'react-router-dom';
 
-function Editpage({setPostID}) {
+function Editpage({setPostID,postId, draftMode}) {
   
   const navigate = useNavigate()
-  
+
+  const [editorValue, setEditorValue] = useState("<h2>Start Typing Your Post Here</h2>")
+
   let [postBgColor,setpostBgColor] = useState("#215F99")
   let [postTextColor,setPostTextColor] = useState("#FC4F00")
   let [postContent,setPostContent] = useState("")
   let [summary, setPostSummary] = useState('')
   let [postTitle,setPostTitle] = useState("")
   let [author,setAuthor] = useState("")
-  let [draftMode,setDraftMode] = useState(false)
   const [loading,setLoading] = useState(true)
 
-  useEffect(()=>{
+  useEffect(()=>{ //sets author when edipage loads up 
     let LSauthor = localStorage.getItem('username')
     setAuthor(LSauthor)
     if(!LSauthor){
@@ -30,9 +32,45 @@ function Editpage({setPostID}) {
       navigate('/account')
       location.reload()
     }
-  })
+  },[])
 
+  useEffect(() => {
+    if(draftMode){            //if page is navigated to when draft mode is true, fetch post
+      setLoading(true)        // and set it as text in the editor
+      setEditorValue("<h3>Fetching Post...</h3>") //fallback incase loading screen doesn't appear
+      postAPI.get('/post/'+postId).then(res =>{
+      setLoading(false)
+      console.log(draftMode)  
+      const post = res.data.post
+
+      const title = post.title
+      let titleInput = document.querySelector('.title-input')  //set title in input field that is disabled
+      titleInput.value = title
+      titleInput.disabled = "disabled"
+
+      const bgColor = post.backgroundColor
+      const txtColor = post.textColor
+      changePrevBg(bgColor)
+      changePrevText(txtColor)
+
+      //const userID = localStorage.getItem(userID)
+      const postUserID = post.user
+      //if user is indeed the author of the post then
+      let content = post.content
+      content = parse(post.content)
+      setEditorValue(content)
+    }).catch(err=>{
+      setLoading(false)
+      console.log(err)
+    })
+     
+
+    }
+    
+  }, [])
   
+
+
 
 
   function changePrevText(color){
@@ -50,6 +88,12 @@ function Editpage({setPostID}) {
     let userid = localStorage.getItem('userID')
     let date = new Date()
     date = date.toISOString()
+
+    //check errors
+    if(checkErrors()){
+      //exit function as erros are rendered externally
+      return 
+    }
     let postJSON = {
       title: postTitle,
       user: userid,
@@ -63,27 +107,70 @@ function Editpage({setPostID}) {
       textColor: postTextColor
     }
     setLoading(true)
-    postAPI.post('/post/'+userid+'/post', postJSON).then(async newPost => {
-      setLoading(false)
-      let data = newPost.data
-      console.log(data)
-      if(data.errors){
-        if(data.errors[0] === 'jwt expired'){
-          refreshAcessToken() //get new access token
+    //if draft mode is false
+    if(!draftMode){  postAPI.post('/post/'+userid+'/post', postJSON).then(async newPost => {
+        setLoading(false)
+        let data = newPost.data
+        console.log(data)
+        if(data.errors){
+          if(data.errors[0] === 'jwt expired'){
+            refreshAcessToken() //get new access token
+          }
+          else{
+            console.log(data.errors)
+          }
         }
-        else{
-          console.log(data.errors)
-        }
-      }
-      let newPostID = data.postId
-      setPostID(newPostID)
-      navigate('/post')
-      //navigate to new page
-    }).catch(err =>{
-      setLoading(false)
-      console.log(err)
-    })
-   
+        let newPostID = data.postId
+        setPostID(newPostID)
+        navigate('/post')
+        //navigate to new page
+      }).catch(err =>{
+        setLoading(false)
+        console.log(err)
+      })
+   }
+   else if(draftMode){
+    //update post
+    postJSON = { //only update selected fields as the others aren't allowed to be update
+      content : postContent,
+      backgroundColor: postBgColor,
+      textColor: postTextColor,
+      summary,
+      date
+    }
+   }
+  }
+
+  async function checkErrors(){
+    let errors = []
+    //check for errors locally
+    if(postTitle.length < 5){
+      errors.push("Please enter a title")
+    }
+    if(postContent.length < 10){
+      errors.push("Please write a post")
+    }
+    if(errors.length > 0){
+      console.log('errors')
+      errors.forEach(error =>{
+        let divError = document.createElement('li')
+        divError.classList.add("post-error")
+        divError.textContent = error
+        const errorsContainer = document.querySelector(".post-errors-container")
+        errorsContainer.appendChild(divError) //render error in document
+        divError.style.opacity = 1
+
+        setTimeout(() => {
+          divError.style.opacity = 0
+        }, 2000);
+
+        setTimeout(() => {
+          errorsContainer.removeChild(errorsContainer.firstElementChild) //remove errors after a while 
+        }, 4000);
+      })
+      return true
+    }
+    return false
   }
 
 
@@ -153,8 +240,8 @@ function Editpage({setPostID}) {
         <Editor //tinymce cloud editor
           id='editor'
           apiKey = '1f17x63gnuprnfm348hzhqwrl8zb92kkuq49wkpealoey6ac'
-          onInit={()=>{setLoading(false)}}
-          initialValue="<h2>Start Typing Your Post Here</h2>"
+          onInit={()=>{if(!draftMode)setLoading(false)}}
+          initialValue= {editorValue}
           onEditorChange={(editorValue, editor)=>{
             setPostContent(editorValue) //set html value to post contnet
             let postSummary = editor.getContent({format: 'text'})
@@ -176,8 +263,9 @@ function Editpage({setPostID}) {
             content_style: 'body { font-family:Inter,Arial,sans-serif; font-size:14px }'
         }} />
         <label htmlFor="draft">Draft</label>
-        <input id='draft' type='checkbox' onChange={e=>{ e.target.checked ? setDraftMode(true) : setDraftMode(false)}} value={'draft'} />
+        <input id='draft' type='checkbox' checked={draftMode} onChange={e=>{ e.target.checked ? setDraftMode(true) : setDraftMode(false)}} value={'draft'} />
         <button onClick={postForm}>Submit</button>
+        <ul className="post-errors-container flex column center" />
     </div>
   )
 }

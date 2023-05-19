@@ -6,16 +6,23 @@
     padding: 50px 50px 20px 50px;
     border-radius: 40px 40px 0px 0px;
     padding-bottom: 100px;
+    position: relative;
 }
 
 #post-bg{
     width: 100vw;
     position: absolute;
     z-index: -1;
-    left: 0;
-    top: 55px;
+    left: -150px;
+    top: -140px;
     transition: all 1s;
     min-height: calc(100vh + 100px);
+}
+#edit-icon{
+    position: absolute;
+    font-size: 60px;
+    top: 20px;
+    right: 20px;
 }
 
 .main-post-title{
@@ -52,4 +59,18 @@
 
 .date{
     margin-bottom: 35px;
+}
+
+.post-errors-container{
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 100px;
+    list-style-type: disc;
+}
+.post-error{
+    color: #da3232;
+    font-size: 25px;
+    margin: auto;
+    transition: all 1s;
 }

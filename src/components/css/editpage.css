@@ -43,3 +43,21 @@
 .text-color-selected,.bg-color-selected{
     border: 3px solid var(--grayblack);
 }
+
+#draft{
+    font-size: 30px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid #000000;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    margin: auto;
+}
+
+#draft:checked{
+    background-color: rgb(80, 199, 54);
+}

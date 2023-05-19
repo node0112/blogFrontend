@@ -20,6 +20,7 @@ function Editpage({setPostID,postId, draftMode}) {
   let [postContent,setPostContent] = useState("")
   let [summary, setPostSummary] = useState('')
   let [postTitle,setPostTitle] = useState("")
+  const [postDraft, setPostDraft] = useState(true)
   let [author,setAuthor] = useState("")
   const [loading,setLoading] = useState(true)
 
@@ -52,6 +53,9 @@ function Editpage({setPostID,postId, draftMode}) {
       const txtColor = post.textColor
       changePrevBg(bgColor)
       changePrevText(txtColor)
+
+        const isPostDraft = post.draft
+        document.querySelector('#draft').checked = isPostDraft
 
       //const userID = localStorage.getItem(userID)
       const postUserID = post.user
@@ -102,7 +106,7 @@ function Editpage({setPostID,postId, draftMode}) {
       likes: 0,
       content: postContent,
       summary,
-      draft: draftMode,
+      draft: postDraft,
       backgroundColor: postBgColor,
       textColor: postTextColor
     }
@@ -262,9 +266,11 @@ function Editpage({setPostID,postId, draftMode}) {
               'removeformat | help',
             content_style: 'body { font-family:Inter,Arial,sans-serif; font-size:14px }'
         }} />
-        <label htmlFor="draft">Draft</label>
-        <input id='draft' type='checkbox' checked={draftMode} onChange={e=>{ e.target.checked ? setDraftMode(true) : setDraftMode(false)}} value={'draft'} />
-        <button onClick={postForm}>Submit</button>
+        <div className="flex vertical " style={{width: 'max-content', height: 'max-content', gap: '10px',marginTop: '25px'}}>
+          <label htmlFor="draft" style={{fontSize: '25px'}}>Draft</label>
+          <input id='draft' type='checkbox' defaultChecked="true" onChange={e=>{ e.target.checked ? setPostDraft(true) : setPostDraft(false)}} value={'draft'} />
+          <button className='button cursor' id='submit-post' style={{backgroundColor: postBgColor, color: postTextColor,marginLeft: '25px'}} onClick={postForm}>Submit Post</button>
+        </div>
         <ul className="post-errors-container flex column center" />
     </div>
   )

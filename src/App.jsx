@@ -74,7 +74,7 @@ function App() {
 
       const postContent = document.createElement('div')
       postContent.className = 'post-content'
-      postContent.textContent = post.summary
+      postContent.textContent = post.summary + ' ...'
 
       const postDate = document.createElement('div')
       postDate.className = 'post-date'

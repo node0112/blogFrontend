@@ -61,9 +61,20 @@ body{
   position: relative;
 }
 
+.button{
+  font-size: 18px;
+  padding: 13px;
+  border: none;
+  border-radius: 7px;
+  background-color: black;
+  color: white;
+}
+
 input:focus{
   outline: none !important;
 }
+
+
 
 label{
   font-family: 'inter',sans-serif;

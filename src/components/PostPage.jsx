@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import './css/postPage.css'
 import Loading from './Loading';
 
-function PostPage({postID, setDraftMode}) {
+function PostPage({postID, setDraftMode, publishPost}) {
   let navigate = useNavigate()
 
   const [parsedPost,setParsedPost] = useState('')
@@ -84,6 +84,8 @@ function PostPage({postID, setDraftMode}) {
     navigate('/create')
   }
 
+
+
   return (
     <div className='main-post flex column'>
       <Loading loading={loading} />
@@ -100,6 +102,9 @@ function PostPage({postID, setDraftMode}) {
       </div>
       <div className="date">{postDate}</div>
       <div>{parse(parsedPost)}</div>
+      { postEdit ? <div>
+        <div className="button"  onClick={publishPost} id='publish-button'>Publish</div>
+      </div> : null}
     </div>
   )
 }

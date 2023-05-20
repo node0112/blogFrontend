@@ -111,7 +111,15 @@ function App() {
   useEffect(getDraftPosts,[Draft])
   
   function publishPost(){
-
+    setLoading(true)
+    postAPI.post('/post/'+postID+'/publish').then(res =>{
+      setLoading(false)
+      console.log(res)
+    })
+    .catch(err=>{
+      setLoading(false)
+      console.log(err.message)
+    })
   }
   
   return (

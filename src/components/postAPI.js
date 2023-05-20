@@ -5,9 +5,8 @@ const api = axios.create({
     baseURL: "https://itypebackend.onrender.com/"
 })
 
-export function refreshAcessToken(fetch){
+export function refreshAcessToken(fetch){ //this function gets a new accesstoken everytime it's called
     const refreshToken = localStorage.getItem("RT")
-    console.log('refresh token' + refreshToken)
     const userEmail = localStorage.getItem('email')
     let reqBody = {
         refreshToken,

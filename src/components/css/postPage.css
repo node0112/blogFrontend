@@ -30,6 +30,7 @@
     font-weight: 500;
     max-width: 1077px;
     margin-top: 60px;
+    text-transform: capitalize;
 }
 
 
@@ -75,13 +76,13 @@
     transition: all 1s;
 }
 
-#publish-button{
+.publish-button{
     width: max-content;
     margin-top: 30px;
     font-size: 25px;
 }
 
-#publish-button:hover{
+.publish-button:hover{
     transition: all 0.3s;
     background-color: gray;
     color: var(--accent);

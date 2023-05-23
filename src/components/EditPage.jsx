@@ -37,7 +37,7 @@ function Editpage({setPostID,postId, draftMode}) {
 
   useEffect(() => {
     if(draftMode){            //if page is navigated to when draft mode is true, fetch post
-      setLoading(true)        // and set it as text in the editor
+      setLoading(true)        // and set it as text in the editor, also update all variables
       setEditorValue("<h3>Fetching Post...</h3>") //fallback incase loading screen doesn't appear
       postAPI.get('/post/'+postId).then(res =>{
       setLoading(false)
@@ -45,6 +45,7 @@ function Editpage({setPostID,postId, draftMode}) {
       const post = res.data.post
 
       const title = post.title
+      setPostTitle(title)
       let titleInput = document.querySelector('.title-input')  //set title in input field that is disabled
       titleInput.value = title
       titleInput.disabled = "disabled"
@@ -54,15 +55,21 @@ function Editpage({setPostID,postId, draftMode}) {
       changePrevBg(bgColor)
       changePrevText(txtColor)
 
-        const isPostDraft = post.draft
-        document.querySelector('#draft').checked = isPostDraft
+      setpostBgColor(bgColor)
+      setPostTextColor(txtColor)
+
+      const isPostDraft = post.draft
+      setPostDraft(isPostDraft)
+      document.querySelector('#draft').checked = isPostDraft
 
       //const userID = localStorage.getItem(userID)
       const postUserID = post.user
       //if user is indeed the author of the post then
       let content = post.content
+      setPostContent(content) //unparsed content
       content = parse(post.content)
       setEditorValue(content)
+      setPostSummary(post.summary)
     }).catch(err=>{
       setLoading(false)
       console.log(err)
@@ -93,11 +100,10 @@ function Editpage({setPostID,postId, draftMode}) {
     let date = new Date()
     date = date.toISOString()
 
+    let errors = await checkErrors()
+    console.log(errors)
     //check errors
-    if(checkErrors()){
-      //exit function as erros are rendered externally
-      return 
-    }
+    if(errors){console.log('joe'); return} //return //exit function as errors are rendered externally
     let postJSON = {
       title: postTitle,
       user: userid,
@@ -140,8 +146,22 @@ function Editpage({setPostID,postId, draftMode}) {
       backgroundColor: postBgColor,
       textColor: postTextColor,
       summary,
+      draft: postDraft,
       date
     }
+    postAPI.post('post/'+postId+'/edit',postJSON).then(res =>{
+      setLoading(false)
+      const data = res.data
+      if(data.errors){
+        renderErrors(data.errors)
+      }
+      let post = res.data.post
+      setPostID(post._id)
+      navigate('/post')
+    }).catch(err =>{
+      setLoading(false)
+      console.log(err.message)
+    })
    }
   }
 
@@ -155,26 +175,32 @@ function Editpage({setPostID,postId, draftMode}) {
       errors.push("Please write a post")
     }
     if(errors.length > 0){
-      console.log('errors')
-      errors.forEach(error =>{
-        let divError = document.createElement('li')
-        divError.classList.add("post-error")
-        divError.textContent = error
-        const errorsContainer = document.querySelector(".post-errors-container")
-        errorsContainer.appendChild(divError) //render error in document
-        divError.style.opacity = 1
-
-        setTimeout(() => {
-          divError.style.opacity = 0
-        }, 2000);
-
-        setTimeout(() => {
-          errorsContainer.removeChild(errorsContainer.firstElementChild) //remove errors after a while 
-        }, 4000);
-      })
+      console.log(errors)
+      renderErrors(errors)
       return true
     }
+    console.log(errors)
     return false
+  }
+
+  function renderErrors(errors){ //shows the errors passed onto it in the dom
+    setLoading(false)
+    errors.forEach(error =>{
+      let divError = document.createElement('li')
+      divError.classList.add("post-error")
+      divError.textContent = error
+      const errorsContainer = document.querySelector(".post-errors-container")
+      errorsContainer.appendChild(divError) //render error in document
+      divError.style.opacity = 1
+
+      setTimeout(() => {
+        divError.style.opacity = 0
+      }, 2000);
+
+      setTimeout(() => {
+        errorsContainer.removeChild(errorsContainer.firstElementChild) //remove errors after a while 
+      }, 4000);
+    })
   }
 
 

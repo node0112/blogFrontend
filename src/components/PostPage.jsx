@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import './css/postPage.css'
 import Loading from './Loading';
 
-function PostPage({postID, setDraftMode, publishPost}) {
+function PostPage({postID, setDraftMode, publishPost, makePostDraft}) {
   let navigate = useNavigate()
 
   const [parsedPost,setParsedPost] = useState('')
@@ -16,6 +16,7 @@ function PostPage({postID, setDraftMode, publishPost}) {
   const [postDate,setPostDate] = useState('')
   const [loading,setLoading] = useState(false)
 
+  const [isPostDraft, setIsPostDraft] = useState(false)
   const[postEdit, setPostEdit] = useState(false)
 
   const [postComments,setPostComments] = useState('')
@@ -48,8 +49,9 @@ function PostPage({postID, setDraftMode, publishPost}) {
       }
       console.log(data)
       if(data.post){
+        checkUser(data.post.user) //check if the current user is the author of the post
         parsePost(data.post)
-        let height 
+        let height //this is used for the dark background for the post page since the container is an overflow element 
         setTimeout(() => {
           height = document.querySelector('.main-post').scrollHeight + 140
           document.querySelector('#post-bg').style.height = height + 'px'
@@ -75,6 +77,7 @@ function PostPage({postID, setDraftMode, publishPost}) {
 
     if(post.draft){
       setPostEdit(true)
+      setIsPostDraft(true)
       //render edit button
     }
   }
@@ -83,7 +86,13 @@ function PostPage({postID, setDraftMode, publishPost}) {
     setDraftMode(true)
     navigate('/create')
   }
-
+   
+  function checkUser(postUser){
+    const userid = localStorage.getItem('userID')
+    if(postUser === userid){
+      setPostEdit(true) //make post editable
+    }
+  }
 
 
   return (
@@ -102,8 +111,11 @@ function PostPage({postID, setDraftMode, publishPost}) {
       </div>
       <div className="date">{postDate}</div>
       <div>{parse(parsedPost)}</div>
-      { postEdit ? <div>
-        <div className="button"  onClick={publishPost} id='publish-button'>Publish</div>
+      { isPostDraft ? <div>
+        <div className="button publish-button"  onClick={publishPost} >Publish</div>
+      </div> : null}
+      { !isPostDraft ? <div>
+        <div className="button publish-button"  onClick={makePostDraft} >Unpublish</div>
       </div> : null}
     </div>
   )

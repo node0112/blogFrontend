@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import './css/postPage.css'
 import Loading from './Loading';
 
-function PostPage({postID, setDraftMode, publishPost, makePostDraft}) {
+function PostPage({postID, setDraftMode, publishPost, unPublishPost}) {
   let navigate = useNavigate()
 
   const [parsedPost,setParsedPost] = useState('')
@@ -115,7 +115,7 @@ function PostPage({postID, setDraftMode, publishPost, makePostDraft}) {
         <div className="button publish-button"  onClick={publishPost} >Publish</div>
       </div> : null}
       { !isPostDraft ? <div>
-        <div className="button publish-button"  onClick={makePostDraft} >Unpublish</div>
+        <div className="button publish-button"  onClick={unPublishPost} >Unpublish</div>
       </div> : null}
     </div>
   )

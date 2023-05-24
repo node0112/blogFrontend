@@ -121,9 +121,10 @@ function App() {
       console.log(err.message)
     })
   }
-  function makePostDraft(){
+
+  function unpublishPost(){
     setLoading(true)
-    postAPI.post('/post/'+postID+'/draft').then(res =>{ //updates posts draft status to false so that it can be seen 
+    postAPI.post('/post/'+postID+'/unpublish').then(res =>{ //updates posts draft status to false so that it can be seen 
       setLoading(false)                                   //on the homepage on relaod 
       console.log(res)
     })
@@ -144,7 +145,7 @@ function App() {
             <Route path = "/"  element = {<Home posts={posts} setPostID = {setPostID}  insertPosts={insertPosts} />} />
             <Route path = "/create"  element = {<Editpage type={"new"} setPostID={setPostID} postId={postID} draftMode={draftMode}/>} />
             <Route path = "/account"  element = {<LoginPage />} />
-            <Route path = "/post"  element = {<PostPage postID={postID} draftMode setDraftMode={setDraftMode} makePostDraft={makePostDraft} publishPost = {publishPost}/>} />
+            <Route path = "/post"  element = {<PostPage postID={postID} draftMode setDraftMode={setDraftMode} unpublishPost={unpublishPost} publishPost = {publishPost}/>} />
             <Route path = "/drafts"  element = {<Draft draftPosts={draftPosts} insertPosts={insertPosts}  setPostID = {setPostID} />} />
             </Routes>
         </div>

@@ -114,7 +114,7 @@ function App() {
     setLoading(true)
     postAPI.post('/post/'+postID+'/publish').then(res =>{ //updates posts draft status to false so that it can be seen 
       setLoading(false)                                   //on the homepage on relaod 
-      console.log(res)
+      location.reload()
     })
     .catch(err=>{
       setLoading(false)
@@ -126,7 +126,8 @@ function App() {
     setLoading(true)
     postAPI.post('/post/'+postID+'/unpublish').then(res =>{ //updates posts draft status to false so that it can be seen 
       setLoading(false)                                   //on the homepage on relaod 
-      console.log(res)
+      navigate('/drafts')
+      location.reload()
     })
     .catch(err=>{
       setLoading(false)

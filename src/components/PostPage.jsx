@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import './css/postPage.css'
 import Loading from './Loading';
 
-function PostPage({postID, setDraftMode, publishPost, unpublishPost}) {
+function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}) {
   let navigate = useNavigate()
 
   const [parsedPost,setParsedPost] = useState('')
@@ -111,11 +111,14 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost}) {
       </div>
       <div className="date">{postDate}</div>
       <div>{parse(parsedPost)}</div>
-      { isPostDraft ? <div>
+      { isPostDraft && postEdit ? <div>
         <div className="button publish-button"  onClick={publishPost} >Publish</div>
       </div> : null}
-      { !isPostDraft ? <div>
+      { !isPostDraft && postEdit ? <div>
         <div className="button publish-button"  onClick={unpublishPost} >Unpublish</div>
+      </div> : null}
+      { !isPostDraft && postEdit ? <div>
+        <div className="button publish-button"  onClick={deletePost} style={{"color" : 'red'}}>Delete</div>
       </div> : null}
     </div>
   )

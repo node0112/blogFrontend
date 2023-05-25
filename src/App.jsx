@@ -135,6 +135,19 @@ function App() {
     })
   }
 
+  function deletePost(){
+    setLoading(true)
+    postAPI.post('/post/'+postID+'/remove').then(res =>{ //updates posts draft status to false so that it can be seen 
+      setLoading(false)                                   //on the homepage on relaod 
+      navigate('/account')
+      //location.reload()
+    })
+    .catch(err=>{
+      setLoading(false)
+      console.log(err.message)
+    })
+  }
+
   
   return (
     <div className="App">

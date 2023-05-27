@@ -1,13 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './css/home.css'
-
+import postAPI from './postAPI'
 
 function Home({posts,insertPosts}) {  
   
+  const [fact,setFact] = useState('loading...')
   useEffect(() => {
     insertPosts(posts)
   }, [posts])
   
+  useEffect(()=>{
+    getFact()
+  },[])
+
+  async function getFact(){
+    let data = await postAPI.get('/fact')
+    let fact = data.data.fact
+    setFact(fact)
+  }
 
   return (
     <div className='home flex'>
@@ -33,7 +43,7 @@ function Home({posts,insertPosts}) {
       <div className="right-container flex column ">
         <div className="fact-container defont flex column">
             <div className="fact-title">Daily Fact</div>
-            <div className="fact-text">It takes 8 minutes for the light of the sun to reach Earth</div>
+            <div className="fact-text">{fact}</div>
         </div>
         <div className="stat-container defont"> 
             <div className="stats flex">

@@ -117,7 +117,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
       { !isPostDraft && postEdit ? <div>
         <div className="button publish-button"  onClick={unpublishPost} >Unpublish</div>
       </div> : null}
-      { !isPostDraft && postEdit ? <div>
+      { postEdit ? <div>
         <div className="button publish-button"  onClick={deletePost} style={{"color" : 'red'}}>Delete</div>
       </div> : null}
     </div>

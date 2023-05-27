@@ -159,7 +159,7 @@ function App() {
             <Route path = "/"  element = {<Home posts={posts} setPostID = {setPostID}  insertPosts={insertPosts} />} />
             <Route path = "/create"  element = {<Editpage type={"new"} setPostID={setPostID} postId={postID} draftMode={draftMode}/>} />
             <Route path = "/account"  element = {<LoginPage />} />
-            <Route path = "/post"  element = {<PostPage postID={postID} draftMode setDraftMode={setDraftMode} unpublishPost={unpublishPost} publishPost = {publishPost}/>} />
+            <Route path = "/post"  element = {<PostPage postID={postID} draftMode setDraftMode={setDraftMode} unpublishPost={unpublishPost} publishPost = {publishPost} deletePost={deletePost} />} />
             <Route path = "/drafts"  element = {<Draft draftPosts={draftPosts} insertPosts={insertPosts}  setPostID = {setPostID} />} />
             </Routes>
         </div>

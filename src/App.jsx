@@ -148,12 +148,20 @@ function App() {
     })
   }
 
+  function searchPost(searchQuery){ //search posts from the db
+    console.log(searchQuery)
+    postAPI.post('/post/search',searchQuery).then(posts=>{ //returns an array of all posts if found else returns empty array
+      console.log(posts)
+    }).catch(err =>{
+      console.log(err.message)
+    })
+  }
   
   return (
     <div className="App">
       <Loading loading={loading} />
         <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
-        <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} />
+        <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} searchPost={searchPost} />
         <div className='content-container flex column'>
             <Routes>
             <Route path = "/"  element = {<Home posts={posts} setPostID = {setPostID}  insertPosts={insertPosts} />} />

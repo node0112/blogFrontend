@@ -16,6 +16,9 @@
     font-family: 'inter';
     color: var(--accent);
 }
+.head-right{
+    gap: 10px;
+}
 
 .selected{
     color: var(--grayblackheader) !important; /* !important overrides default hover effect */
@@ -31,6 +34,10 @@
     color: var(--darkgray);
     padding: 0 0 5px 0;
     font-size: 1.2em;
+}
+#search{
+    color: white;
+    font-size: 30px;
 }
 
 .header-link{

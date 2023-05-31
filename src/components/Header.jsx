@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import './css/header.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-function Header({selected,setSelected, setDraftMode}) {
+function Header({selected,setSelected, setDraftMode, searchPost}) {
   const [email,setEmail] = useState('')
   const [username,setUsername] = useState('')
   const [tooltip,setTooltip] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   function changeColor(){
     let header = document.querySelector(".header")
@@ -61,6 +62,26 @@ function Header({selected,setSelected, setDraftMode}) {
   setSelected(path) 
   }, [])
   
+  async function initiateSearch(){
+    if(searchQuery.length < 6){
+      renderError("Type Atleast 5 letters")
+    }
+    const query = searchQuery //to pass the object as a var instead of a state
+    searchPost(query)
+  }
+
+  function renderError(error){
+    const searchInput = document.querySelector('.searchbox')
+    searchInput.value = error
+    searchInput.style.color = 'red' 
+    searchInput.style.borderBottom = '4px solid red;'
+
+    setTimeout(() => {
+      searchInput.value = searchQuery
+      searchInput.style.color = '' //sets te color back to default
+      searchInput.style.borderBottom = '4px solid var(--accent);'
+    }, 1500);
+  } 
   
   return (
     <div className="header flex vertical defont">
@@ -72,8 +93,9 @@ function Header({selected,setSelected, setDraftMode}) {
           </div>
           {tooltip ? <span class="tooltiptext flex column"><div>{email}</div><div>{username}</div></span> : null}
         </div>
-        <div className="head-right">
-          <input type="text" className="searchbox" placeholder='Search A Post'/>
+        <div className="head-right flex center vert">
+          <input type="text" className="searchbox" placeholder='Search A Post' onChange={e =>{setSearchQuery(e.target.value)}}/>
+          <div class="header-link material-icons cursor" id="search" onClick={initiateSearch}>search</div>
         </div>
     </div>
   )

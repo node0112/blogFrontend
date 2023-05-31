@@ -84,7 +84,6 @@ function App() {
       newPost.id = postID 
 
       newPost.addEventListener('click', ()=>{
-        console.log(newPost.id)
         let id = newPost.id
         setPostID(id)
         navigate('/post')

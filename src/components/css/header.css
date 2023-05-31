@@ -36,7 +36,7 @@
     font-size: 1.2em;
 }
 #search{
-    color: white;
+    color: var(--darkgray);
     font-size: 30px;
 }
 

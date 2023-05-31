@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import postAPI from './postAPI'
+import { checkResponseForTokErrors } from './postAPI';
 import { refreshAcessToken } from './postAPI';
 import parse from 'html-react-parser';
 import './css/postPage.css'
@@ -32,32 +33,19 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
     setLoading(true)
     postAPI.get('/post/'+postID).then(resData=>{
       let data = resData.data
-      let errors = []
-      if(data.errors) errors = data.errors;
-      setLoading(false)
-      if(errors.length > 0){ //use refresh token if AT expired
-        if(errors[0] === 'jwt expired' || errors[0] === 'jwt malformed'){ //if errors in the token
-          let error = refreshAcessToken(fetchPost)
-          console.log(error)
-          if(error == 'signout'){
-            navigate('/account')
-            console.log('signout')
-            return
-            //location.reload()
-          }
-        }
-      }
-      console.log(data)
-      if(data.post){
-        checkUser(data.post.user) //check if the current user is the author of the post
-        parsePost(data.post)
-        let height //this is used for the dark background for the post page since the container is an overflow element 
-        setTimeout(() => {
-          height = document.querySelector('.main-post').scrollHeight + 140
-          document.querySelector('#post-bg').style.height = height + 'px'
-        }, 200);
-        document.querySelector('#post-bg').style.backgroundColor="black"
-      }
+      let errorStatus = checkResponseForTokErrors(resData, setLoading, fetchPost)
+      console.log(errorStatus)
+      if(!errorStatus){
+          if(data.post){
+          checkUser(data.post.user) //check if the current user is the author of the post
+          parsePost(data.post)
+          let height //this is used for the dark background for the post page since the container is an overflow element 
+          setTimeout(() => {
+            height = document.querySelector('.main-post').scrollHeight + 140
+            document.querySelector('#post-bg').style.height = height + 'px'
+          }, 200);
+          document.querySelector('#post-bg').style.backgroundColor="black"
+      }}
     })
     .catch(err=>{
       console.log(err.message)

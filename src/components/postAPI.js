@@ -29,24 +29,25 @@ export function refreshAcessToken(fetch){ //this function gets a new accesstoken
     })
 }
 
-function checkResponseForTokErrors(resData,setLoading){
+export function checkResponseForTokErrors(resData,setLoading, fetchPost){
     let data = resData.data
-      let errors = []
-      if(data.errors) errors = data.errors;
-      setLoading(false)
-      if(errors.length > 0){ //use refresh token if AT expired
-        if(errors[0] === 'jwt expired' || errors[0] === 'jwt malformed'){ //if errors in the token
-          let error = refreshAcessToken(fetchPost)
-          console.log(error)
-          if(error == 'signout'){
-            navigate('/account')
-            console.log('signout')
-            return true
-            //location.reload()
-          }
-          return true
+    let errors = []
+    if(data.errors) errors = data.errors;
+    setLoading(false)
+    if(errors.length > 0){ //use refresh token if AT expired
+    if(errors[0]){ //if errors in the token
+        let error = refreshAcessToken(fetchPost)
+        if(error == 'signout'){
+        navigate('/account')
+        console.log('signout')
+        return true
+        //location.reload()
         }
-      }
+        return true
+    }
+    return errors
+    }
+    else return false
 }
 function signOut(){
     localStorage.clear()

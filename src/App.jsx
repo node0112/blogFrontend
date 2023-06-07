@@ -47,7 +47,7 @@ function App() {
         setDraftPosts(res.data.posts)
     })
   }
-
+ 
   function insertPosts(posts){ //post constructors
     posts.forEach(post => {
       //insert elements inside the dom
@@ -121,13 +121,18 @@ function App() {
     })
   }
 
+  function clearPosts(){ //clear posts on home page
+    let postContainer = document.querySelector('.posts-container')
+    postContainer.innerHTML = ''
+  }
+
   function unpublishPost(){
     setLoading(true)
     postAPI.post('/post/'+postID+'/unpublish').then(res =>{ //updates posts draft status to false so that it can be seen 
       setLoading(false)                                   //on the homepage on relaod 
       navigate('/drafts')
       location.reload()
-    })
+    })    
     .catch(err=>{
       setLoading(false)
       console.log(err.message)
@@ -146,22 +151,14 @@ function App() {
       console.log(err.message)
     })
   }
-
-  function searchPost(searchQuery){ //search posts from the db
-    console.log(searchQuery)
-    postAPI.post('/post/search',searchQuery).then(posts=>{ //returns an array of all posts if found else returns empty array
-      console.log(posts)
-    }).catch(err =>{
-      console.log(err.message)
-    })
-  }
   
   return (
     <div className="App">
       <Loading loading={loading} />
         <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
-        <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} searchPost={searchPost} />
+        <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} setLoading={setLoading} clearPosts={clearPosts} insertPosts={insertPosts} />
         <div className='content-container flex column'>
+            <Loading loading={loading}/>
             <Routes>
             <Route path = "/"  element = {<Home posts={posts} setPostID = {setPostID}  insertPosts={insertPosts} />} />
             <Route path = "/create"  element = {<Editpage type={"new"} setPostID={setPostID} postId={postID} draftMode={draftMode}/>} />

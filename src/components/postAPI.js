@@ -3,7 +3,7 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: "https://itypebackend.onrender.com/"
-})
+})  
 
 export function refreshAcessToken(fetch){ //this function gets a new accesstoken everytime it's called
     const refreshToken = localStorage.getItem("RT")
@@ -18,6 +18,7 @@ export function refreshAcessToken(fetch){ //this function gets a new accesstoken
         localStorage.setItem('AT',accessToken) //update current token in LS
         setAccessToken()
         if(fetch){
+            console.log('called')
             fetch() //re fetches post with the given function
         }
         return("")
@@ -29,19 +30,19 @@ export function refreshAcessToken(fetch){ //this function gets a new accesstoken
     })
 }
 
-export function checkResponseForTokErrors(resData,setLoading, fetchPost){
+export function checkResponseForTokErrors(resData,setLoading,assignedFunction){
     let data = resData.data
     let errors = []
     if(data.errors) errors = data.errors;
     setLoading(false)
     if(errors.length > 0){ //use refresh token if AT expired
     if(errors[0]){ //if errors in the token
-        let error = refreshAcessToken(fetchPost)
+        let error = refreshAcessToken(assignedFunction)
         if(error == 'signout'){
         navigate('/account')
         console.log('signout')
+        location.reload()
         return true
-        //location.reload()
         }
         return true
     }

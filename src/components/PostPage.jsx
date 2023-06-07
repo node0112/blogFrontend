@@ -82,6 +82,10 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
     }
   }
 
+  function addLike(){
+    //add a like or dislike based on wether the user had pressed the button
+  }
+
 
   return (
     <div className='main-post flex column'>
@@ -92,7 +96,8 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
       <div className="post-info-container flex">
         <div className="main-post-author">{postAuthor}</div>
         <div className="main-stat-container">
-          <div className="likes">{postLikes}</div>
+          <div className="likes flex vertical horizontal">
+           <div className="material-symbols-outlined" id='add-fav' onClick={addLike}>heart_plus</div>{postLikes}</div>
           <div className="comments"></div>
         </div>
         <hr className="sep-line" />

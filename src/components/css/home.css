@@ -41,7 +41,7 @@
 .fact-text{
     font-size: 20px;
     color: var(--lightgray);
-    overflow: scroll;
+    overflow-y: scroll;
    display: -webkit-box;
    -webkit-line-clamp: 7; /* number of lines to show */
            line-clamp: 7; 
@@ -124,7 +124,7 @@
     font-size: 25px;
     margin-bottom: 5px;
     max-height: 100px;
-    overflow: scroll;
+    overflow-y: scroll;
    display: -webkit-box;
    -webkit-line-clamp: 2; /* number of lines to show */
            line-clamp: 2; 

@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import './css/header.css'
 import { useLocation, useNavigate } from 'react-router-dom'
+import postAPI, { checkResponseForTokErrors, setAccessToken } from './postAPI'
 
-function Header({selected,setSelected, setDraftMode, searchPost}) {
+
+function Header({selected,setSelected, setDraftMode, setLoading, insertPosts, clearPosts}) {
+
   const [email,setEmail] = useState('')
   const [username,setUsername] = useState('')
   const [tooltip,setTooltip] = useState(false)
@@ -32,8 +35,7 @@ function Header({selected,setSelected, setDraftMode, searchPost}) {
 
   useEffect(updateHeader,[selected])
 
-  useEffect(()=>{
-    //get user from ls if signed in
+  useEffect(()=>{ //get user from ls if signed in
     let lsemail = localStorage.getItem('email')
     let lsUsername = localStorage.getItem('username')
     if(lsemail){
@@ -61,15 +63,42 @@ function Header({selected,setSelected, setDraftMode, searchPost}) {
   }
   setSelected(path) 
   }, [])
-  
+
   async function initiateSearch(){
     if(searchQuery.length < 6){
       renderError("Type Atleast 5 letters")
+      return
     }
-    const query = searchQuery //to pass the object as a var instead of a state
-    searchPost(query)
+    searchPost()
   }
 
+  async function searchPost(){ //search posts from the db
+    setLoading(true)
+    navigate('/')
+    setSelected('home')
+    const reqSearch= {
+      search: searchQuery
+    }
+    postAPI.post('/post/search',reqSearch).then(resData=>{ //returns an array of all posts if found else returns empty array
+      console.log(resData)
+      const errorStatus = checkResponseForTokErrors(resData,setLoading,searchPost) //checks response for token related errors
+      if(!errorStatus){
+        console.log(resData)
+        let posts = resData.data
+        const totalResults = posts.length
+        console.log(totalResults)
+        clearPosts()
+        document.querySelector('.content-title').textContent = totalResults + " Posts Found"
+        insertPosts(posts)
+      }
+
+      else{ //show and error and tell that it is retrying
+        renderError('Error; Retrying in 20s')
+      }
+    }).catch(err =>{
+      console.log(err.message)
+    }) 
+  }
   function renderError(error){
     const searchInput = document.querySelector('.searchbox')
     searchInput.value = error
@@ -80,10 +109,11 @@ function Header({selected,setSelected, setDraftMode, searchPost}) {
       searchInput.value = searchQuery
       searchInput.style.color = '' //sets te color back to default
       searchInput.style.borderBottom = '4px solid var(--accent);'
-    }, 1500);
+    }, 3000);
   } 
-  
-  return (
+
+
+  return ( 
     <div className="header flex vertical defont">
         <div className='head-left defont flex '>
           <div className='header-link selected cursor' id='home' onClick={()=>{navigate("/"); setSelected("home"); setDraftMode(false)}}>Home</div>
@@ -94,7 +124,7 @@ function Header({selected,setSelected, setDraftMode, searchPost}) {
           {tooltip ? <span class="tooltiptext flex column"><div>{email}</div><div>{username}</div></span> : null}
         </div>
         <div className="head-right flex center vert">
-          <input type="text" className="searchbox" placeholder='Search A Post' onChange={e =>{setSearchQuery(e.target.value)}}/>
+          <input type="text" className="searchbox" placeholder='Search A Post' onKeyDown={(e)=>{e.key === 'Enter' ? initiateSearch()  : null}} onChange={e =>{setSearchQuery(e.target.value)}}/>
           <div class="header-link material-icons cursor" id="search" onClick={initiateSearch}>search</div>
         </div>
     </div>

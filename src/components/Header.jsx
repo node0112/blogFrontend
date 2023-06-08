@@ -39,6 +39,7 @@ function Header({selected,setSelected, setDraftMode, setLoading, insertPosts, cl
     let lsemail = localStorage.getItem('email')
     let lsUsername = localStorage.getItem('username')
     if(lsemail){
+      console.log(true)
         setTooltip(true)
         setEmail(lsemail)
         setUsername(lsUsername)
@@ -49,7 +50,7 @@ function Header({selected,setSelected, setDraftMode, setLoading, insertPosts, cl
   const navigate = useNavigate()
   const location = useLocation()
 
-  useEffect(() => {
+  useEffect(() => { //change color of header and show tooltip
   window.addEventListener("scroll", ()=>{
     changeColor()
   })
@@ -61,8 +62,23 @@ function Header({selected,setSelected, setDraftMode, setLoading, insertPosts, cl
   if(path === "post"){
     path = ('home')
   }
-  setSelected(path) 
+  setSelected(path)
+
   }, [])
+
+  useEffect(()=>{
+    const tooltipelem = document.querySelector('.tooltiptext')
+    if(tooltip){
+      tooltipelem.style.opacity = '0'
+      const accElem = document.getElementById('account')
+      accElem.addEventListener('mouseover', ()=>{
+        tooltipelem.style.opacity = '1' 
+      })
+      accElem.addEventListener('mouseout', ()=>{
+        tooltipelem.style.opacity = '0' 
+      })
+    }
+  }, [tooltip])
 
   async function initiateSearch(){
     if(searchQuery.length < 6){

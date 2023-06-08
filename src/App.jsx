@@ -156,7 +156,7 @@ function App() {
     <div className="App">
       <Loading loading={loading} />
         <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
-        <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} setLoading={setLoading} clearPosts={clearPosts} insertPosts={insertPosts} />
+        <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} setLoading={setLoading} clearPosts={clearPosts} insertPosts={insertPosts } />
         <div className='content-container flex column'>
             <Loading loading={loading}/>
             <Routes>

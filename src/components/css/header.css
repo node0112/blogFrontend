@@ -59,7 +59,6 @@
 
 
 .tooltiptext {
-    visibility: hidden;
     width: 120px;
     height: max-content;
     background-color: black;
@@ -67,13 +66,10 @@
     padding: 10px;
     border-radius: 10px;
     font-size: 10px;
-    /* Position the tooltip text - see examples below! */
     position: absolute;
     bottom: -40px;
+    left: 25%;
     z-index: 1;
     gap: 7px;
-  }
-
-#account:hover .tooltiptext {
-    visibility: visible;
+    transition: all 0.3s;
   }

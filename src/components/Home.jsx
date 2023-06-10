@@ -42,7 +42,7 @@ function Home({posts,insertPosts}) {
       </div>
       <div className="right-container flex column ">
         <div className="fact-container defont flex column">
-            <div className="fact-title">Daily Fact</div>
+            <div className="fact-title flex vertical">Daily Fact<div className="material-icons cursor" style={{'marginLeft': '5px', 'fontSize' : '30px'}}>psychology</div></div>
             <div className="fact-text">{fact}</div>
         </div>
         <div className="stat-container defont"> 

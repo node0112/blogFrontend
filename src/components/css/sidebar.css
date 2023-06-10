@@ -9,4 +9,21 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(5px);
     z-index: 11;
+    transition: all 1.5s;
+    position: fixed;
+    top: 55px;
+}
+
+.sidebar-top-container{
+    margin-top: 40%;
+    gap: 30px;
+}
+
+.sidebar-link{
+    font-size: 25px;
+    color: var(--accent);
+}
+
+.selected-sb{
+    color: black;
 }

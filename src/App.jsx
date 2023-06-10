@@ -158,8 +158,9 @@ function App() {
   return (
     <div className="App">
       <Loading loading={loading} />
-        <div className='logo-bar flex vertical horizontal'> <i className="material-symbols-outlined menu-logo">menu</i> ITYPE</div>
+        <div className='logo-bar flex vertical horizontal'> <i className="material-symbols-outlined menu-logo" onClick={()=>{setSidebarOpen(true)}}>menu</i> ITYPE</div>
         <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} setLoading={setLoading} clearPosts={clearPosts} insertPosts={insertPosts } />
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} selected={selected} setSelected={setSelected} setDraftMode={setDraftMode} />
         <div className='content-container flex column'>
             <Loading loading={loading}/>
             <Routes>

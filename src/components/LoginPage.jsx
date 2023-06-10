@@ -3,10 +3,10 @@ import authAPI from './authAPI'
 import './css/loginpage.css'
 import Loading from './Loading'
 import '../components/postAPI'
-import postAPI, { setAccessToken } from '../components/postAPI'
+import postAPI, { checkResponseForTokErrors, setAccessToken } from '../components/postAPI'
 
 
-function LoginPage() {
+function LoginPage({insertPosts}) {
   
   const [signedIn,setSignedIn] = useState(true)
   const [email, setEmail ] = useState("")
@@ -14,6 +14,8 @@ function LoginPage() {
   const [username, setUsername] = useState("")
   const [userID,setUserID] = useState('')
   const [loading,setLoading] = useState(false)
+
+  const [accPosts, setAccPosts] = useState([])
 
   useEffect(() => {
     let accessToken = localStorage.getItem("AT")
@@ -153,14 +155,28 @@ function LoginPage() {
     });
    
   }
-
+  
+  async function getUserPosts(){ //fetch posts for user
+    setLoading(true)
+    postAPI.get('/post/'+userID+'/userposts').then(resData => {
+      let errorStatus = checkResponseForTokErrors(resData, setLoading, getUserPosts)
+      if(!errorStatus){
+        const posts  = resData.data
+        setAccPosts(posts)
+        insertPosts(posts)
+      }
+      setLoading(false)
+    }).catch(err =>{
+      setLoading(false)
+      console.log(err)
+    })
+  }
   useEffect(() => {
     //fetch user info from api if user is signed in
     if(signedIn){
-      // const posts = postAPI.get('/user/'+userID)
-      //fetch posts for user  
+      if(userID && accPosts.length < 1) getUserPosts()
     }
-  }, [signedIn])
+  }, [signedIn,userID])
 
   return (
     <div>
@@ -196,7 +212,9 @@ function LoginPage() {
           </div>
         </div>
         <div className="acc-bottom-container">
+          <Loading loading={loading} />
           <div className="small-heading" style={{marginBottom:"25px"}} >Posts</div>
+          <div className="posts-container"></div>
         </div>
         <div className="acc-stat-container defont"> 
         <div className="small-heading" style={{marginBottom:"25px",marginTop:'-25px'}} >Stats</div>

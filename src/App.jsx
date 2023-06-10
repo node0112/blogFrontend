@@ -28,6 +28,7 @@ function App() {
     fetchPosts()
     //set access token and refreshtokens
     setAccessToken()
+  
   },[Home])
   
 
@@ -162,7 +163,7 @@ function App() {
             <Routes>
             <Route path = "/"  element = {<Home posts={posts} setPostID = {setPostID}  insertPosts={insertPosts} />} />
             <Route path = "/create"  element = {<Editpage type={"new"} setPostID={setPostID} postId={postID} draftMode={draftMode}/>} />
-            <Route path = "/account"  element = {<LoginPage />} />
+            <Route path = "/account"  element = {<LoginPage insertPosts={insertPosts}/>} />
             <Route path = "/post"  element = {<PostPage postID={postID} draftMode setDraftMode={setDraftMode} unpublishPost={unpublishPost} publishPost = {publishPost} deletePost={deletePost} />} />
             <Route path = "/drafts"  element = {<Draft draftPosts={draftPosts} insertPosts={insertPosts}  setPostID = {setPostID} />} />
             </Routes>

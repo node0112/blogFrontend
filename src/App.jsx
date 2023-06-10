@@ -160,7 +160,6 @@ function App() {
       <Loading loading={loading} />
         <div className='logo-bar flex vertical horizontal'> <i className="material-symbols-outlined menu-logo">menu</i> ITYPE</div>
         <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} setLoading={setLoading} clearPosts={clearPosts} insertPosts={insertPosts } />
-        <Sidebar sidebarOpen={sidebarOpen} />
         <div className='content-container flex column'>
             <Loading loading={loading}/>
             <Routes>

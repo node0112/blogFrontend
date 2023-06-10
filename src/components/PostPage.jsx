@@ -12,7 +12,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
 
   const [parsedPost,setParsedPost] = useState('')
   const [postTitle,setPostTitle] = useState('')
-  const [postAuthor,setPostAuthor] = useState('Error, retrying') //default message incase post fetch fails
+  const [postAuthor,setPostAuthor] = useState('Error, retrying in 20s') //default message incase post fetch fails
   const [postLikes,setLikes] = useState('')
   const [postDate,setPostDate] = useState('')
   const [loading,setLoading] = useState(false)

@@ -2,13 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import postAPI from './postAPI'
 import { checkResponseForTokErrors } from './postAPI';
-import { refreshAcessToken } from './postAPI';
 import parse from 'html-react-parser';
 import './css/postPage.css'
 import Loading from './Loading';
 
 function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}) {
+
   let navigate = useNavigate()
+  useEffect(()=>{ //chheckj is user is signed in
+    const user = localStorage.getItem('email')
+    if(!user){
+      navigate('/account')
+    }
+  })
 
   const [parsedPost,setParsedPost] = useState('')
   const [postTitle,setPostTitle] = useState('')

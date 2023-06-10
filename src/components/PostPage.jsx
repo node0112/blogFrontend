@@ -20,6 +20,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
   const [postTitle,setPostTitle] = useState('')
   const [postAuthor,setPostAuthor] = useState('Error, retrying in 20s') //default message incase post fetch fails
   const [postLikes,setLikes] = useState('')
+  const [commentsCount,setCommentsCount] = useState(0)
   const [postDate,setPostDate] = useState('')
   const [loading,setLoading] = useState(false)
 
@@ -90,6 +91,14 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
 
   function addLike(){
     //add a like or dislike based on wether the user had pressed the button
+    postAPI.post('/post/'+postID+'/upvote').then(res=>{
+      if(res.status === 200){
+        setLikes(postLikes+1)
+        document.querySelector('.likes').style.color = 'red'
+      }
+    }).catch(err=>{
+      console.log(err)
+    })
   }
 
 
@@ -101,10 +110,13 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
       <div id="post-bg"></div>
       <div className="post-info-container flex">
         <div className="main-post-author">{postAuthor}</div>
-        <div className="main-stat-container">
+        <div className="main-stat-container flex" style={{'gap': '10px'}}>
           <div className="likes flex vertical horizontal">
-           <div className="material-symbols-outlined" id='add-fav' onClick={addLike}>heart_plus</div>{postLikes}</div>
-          <div className="comments"></div>
+           <div className="material-symbols-outlined cursor" id='add-fav' onClick={addLike}>heart_plus</div>{postLikes}
+          </div>
+          <div className="comments flex vertical horizontal">
+          <div className="material-symbols-outlined" id='add-fav' onClick={addLike}>message</div>{commentsCount}
+          </div>
         </div>
         <hr className="sep-line" />
       </div>

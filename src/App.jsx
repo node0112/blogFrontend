@@ -10,6 +10,7 @@ import LoginPage from './components/LoginPage'
 import PostPage from './components/PostPage'
 import Loading from './components/Loading'
 import Draft from './components/Draft'
+import Sidebar from './components/Sidebar'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
   const[ draftPosts,setDraftPosts] = useState([])
   const [postID, setPostID] = useState('')
   const [loading,setLoading] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [draftMode, setDraftMode] = useState(false)
 
   useEffect(()=>{
@@ -156,8 +158,9 @@ function App() {
   return (
     <div className="App">
       <Loading loading={loading} />
-        <div className='logo-bar'> <i className="menu-logo">menu</i> ITYPE</div>
+        <div className='logo-bar flex vertical horizontal'> <i className="material-symbols-outlined menu-logo">menu</i> ITYPE</div>
         <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} setLoading={setLoading} clearPosts={clearPosts} insertPosts={insertPosts } />
+        <Sidebar sidebarOpen={sidebarOpen} />
         <div className='content-container flex column'>
             <Loading loading={loading}/>
             <Routes>

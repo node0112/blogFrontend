@@ -7,5 +7,6 @@
     top: 55px;
     background-color: #eaeaea91 ;
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(5px);
     z-index: 11;
 }

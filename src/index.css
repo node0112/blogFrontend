@@ -15,6 +15,9 @@ body{
 }
 
 
+.menu-logo{
+  font-size: 35px;
+}
 
 .flex{
   display: flex;

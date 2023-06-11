@@ -292,7 +292,7 @@ function Editpage({setPostID,postId, draftMode}) {
               'removeformat | help',
             content_style: 'body { font-family:Inter,Arial,sans-serif; font-size:14px }'
         }} />
-        <div className="flex vertical " style={{width: 'max-content', height: 'max-content', gap: '10px',marginTop: '25px'}}>
+        <div className="flex vertical post-options" style={{width: 'max-content', height: 'max-content', gap: '10px',marginTop: '25px'}}>
           <label htmlFor="draft" style={{fontSize: '25px'}}>Draft</label>
           <input id='draft' type='checkbox' defaultChecked="true" onChange={e=>{ e.target.checked ? setPostDraft(true) : setPostDraft(false)}} value={'draft'} />
           <button className='button cursor' id='submit-post' style={{backgroundColor: postBgColor, color: postTextColor,marginLeft: '25px'}} onClick={postForm}>Submit Post</button>

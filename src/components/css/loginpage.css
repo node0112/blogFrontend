@@ -37,9 +37,6 @@
 
 /*account page signed in css*/
 
-.top-acc-container{
-
-}
 
 .acc-stat-container{
     position: absolute;
@@ -56,4 +53,15 @@
 
 .account-info{
     gap: 7px;
+}
+
+@media (max-width: 500px){
+    .top-acc-conatiner{
+        margin: auto;
+    }
+    .acc-stat-container{
+        position: static;
+        margin-bottom: 50px;
+        margin-top: 25px;
+    }
 }

@@ -61,3 +61,17 @@
 #draft:checked{
     background-color: rgb(80, 199, 54);
 }
+
+@media (max-width: 500px){
+    #color-picker{
+        flex-direction: column;
+    }
+    .edit-container{
+        flex-direction: column;
+        margin: auto;
+        align-items: center;
+    }
+    .post-options{
+        margin: auto;
+    }
+}

@@ -211,18 +211,19 @@ function LoginPage({insertPosts}) {
           </div>
           </div>
         </div>
-        <div className="acc-bottom-container">
-          <Loading loading={loading} />
-          <div className="small-heading" style={{marginBottom:"25px"}} >Posts</div>
-          <div className="posts-container"></div>
-        </div>
         <div className="acc-stat-container defont"> 
-        <div className="small-heading" style={{marginBottom:"25px",marginTop:'-25px'}} >Stats</div>
+          <div className="small-heading" style={{marginBottom:"25px",marginTop:'-25px'}} >Stats</div>
           <div className="acc-stats flex">
             <div className="stat-name">Likes Received: </div>
             <div className="stat-value">0</div>
           </div>
         </div>
+        <div className="acc-bottom-container">
+          <Loading loading={loading} />
+          <div className="small-heading" style={{marginBottom:"25px"}} >Posts</div>
+          <div className="posts-container"></div>
+        </div>
+        
       </div>
       }
     </div>

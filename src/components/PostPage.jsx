@@ -49,6 +49,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
           let height //this is used for the dark background for the post page since the container is an overflow element 
           setTimeout(() => {
             height = document.querySelector('.main-post').scrollHeight + 140
+            console.log(height)
             document.querySelector('#post-bg').style.height = height + 'px'
           }, 200);
           document.querySelector('#post-bg').style.backgroundColor="black"
@@ -101,13 +102,19 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
     })
   }
 
+  useEffect(()=>{
+    let contenWidth = document.querySelector('.main-post-title').clientWidth
+    console.log(contenWidth)
+    document.querySelector('.sep-line').style.width = contenWidth + 'px'
+  },[])
+
 
   return (
     <div className='main-post flex column'>
       <Loading loading={loading} />
       <div className="main-post-title">{postTitle}</div>
       { postEdit ? <div className="material-icons cursor"  onClick={setEditPost} id='edit-icon'>edit_note</div> : null}
-      <div id="post-bg"></div>
+      <div id="post-bg" ></div>
       <div className="post-info-container flex">
         <div className="main-post-author">{postAuthor}</div>
         <div className="main-stat-container flex" style={{'gap': '10px'}}>

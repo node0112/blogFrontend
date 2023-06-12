@@ -25,6 +25,9 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [draftMode, setDraftMode] = useState(false)
 
+  const [fact,setFact] = useState('loading...')
+
+
   useEffect(()=>{
     //get posts for hompage
     fetchPosts()
@@ -160,11 +163,11 @@ function App() {
       <Loading loading={loading} />
         <div className='logo-bar flex vertical horizontal'> <i className="material-symbols-outlined menu-logo" onClick={()=>{setSidebarOpen(true)}}>menu</i> ITYPE</div>
         <Header selected={selected} setSelected={setSelected}  setDraftMode={setDraftMode} setLoading={setLoading} clearPosts={clearPosts} insertPosts={insertPosts } />
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} selected={selected} setSelected={setSelected} setDraftMode={setDraftMode} />
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} selected={selected} setSelected={setSelected} setDraftMode={setDraftMode} fact={fact}/>
         <div className='content-container flex column'>
             <Loading loading={loading}/>
             <Routes>
-            <Route path = "/"  element = {<Home posts={posts} setPostID = {setPostID}  insertPosts={insertPosts} />} />
+            <Route path = "/"  element = {<Home posts={posts} setPostID = {setPostID}  insertPosts={insertPosts} fact={fact} setFact={setFact} />} />
             <Route path = "/create"  element = {<Editpage type={"new"} setPostID={setPostID} postId={postID} draftMode={draftMode}/>} />
             <Route path = "/account"  element = {<LoginPage insertPosts={insertPosts}/>} />
             <Route path = "/post"  element = {<PostPage postID={postID} draftMode setDraftMode={setDraftMode} unpublishPost={unpublishPost} publishPost = {publishPost} deletePost={deletePost} />} />

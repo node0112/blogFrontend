@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import './css/home.css'
 import postAPI from './postAPI'
 
-function Home({posts,insertPosts}) {  
+function Home({posts,insertPosts, fact, setFact}) {  
   
-  const [fact,setFact] = useState('loading...')
   useEffect(() => {
     insertPosts(posts)
   }, [posts])

@@ -1,6 +1,6 @@
 
 .sidebar{
-    width: 181px;
+    width: 140px !important;
     height: calc(100vh - 55px);
     position: fixed;
     left: 0;
@@ -11,12 +11,21 @@
     z-index: 11;
     transition: all 1.5s;
     position: fixed;
-    top: 55px;
+    padding: 0 24px 0 24px;
 }
 
 .sidebar-top-container{
     margin-top: 40%;
     gap: 30px;
+}
+
+.sidebar-bottom-container{
+    position: absolute;
+    bottom: 35px;
+}
+
+.sidebar-stat-container{
+    margin-top: 35px;
 }
 
 .sidebar-link{

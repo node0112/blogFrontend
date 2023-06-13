@@ -20,14 +20,13 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
   const [postTitle,setPostTitle] = useState('')
   const [postAuthor,setPostAuthor] = useState('Error, retrying in 20s') //default message incase post fetch fails
   const [postLikes,setLikes] = useState('')
-  const [commentsCount,setCommentsCount] = useState(0)
   const [postDate,setPostDate] = useState('')
   const [loading,setLoading] = useState(false)
 
   const [isPostDraft, setIsPostDraft] = useState(false)
   const[postEdit, setPostEdit] = useState(false)
 
-  const [postComments,setPostComments] = useState('')
+  const [postComments,setPostComments] = useState(false)
 
   useEffect(()=>{
       fetchPost() //get post from server on inital render
@@ -41,7 +40,6 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
     postAPI.get('/post/'+postID).then(resData=>{
       let data = resData.data
       let errorStatus = checkResponseForTokErrors(resData, setLoading, fetchPost)
-      console.log(errorStatus)
       if(!errorStatus){
           if(data.post){
           checkUser(data.post.user) //check if the current user is the author of the post
@@ -49,7 +47,6 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
           let height //this is used for the dark background for the post page since the container is an overflow element 
           setTimeout(() => {
             height = document.querySelector('.main-post').scrollHeight + 140
-            console.log(height)
             document.querySelector('#post-bg').style.height = height + 'px'
           }, 200);
           document.querySelector('#post-bg').style.backgroundColor="black"
@@ -102,10 +99,114 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
     })
   }
 
+ function fetchComments(){
+  setLoading(true)
+    postAPI.get('/post/'+postID+'/comments').then(resData =>{
+      setLoading(false)
+      let errorStatus = checkResponseForTokErrors(resData,setLoading,fetchComments)
+      if(!errorStatus){
+        let commentsData = resData.data.comments
+        console.log(commentsData)
+        if(commentsData.length > 0) renderComments(commentsData)
+      }
+    }).catch(err=>{
+      setLoading(false)
+      console.log(err)
+    })
+ }
+
+ function renderComments(comments){
+  const commentsContainer = document.getElementById('comments-container')
+  setPostComments(true)
+  comments.forEach(comment =>{
+    const commentContainer = document.createElement('div')
+    commentContainer.classList.add('comment-container')
+    const commentInfo =  document.createElement("div")
+    commentInfo.classList.add('comment-info')   
+    commentInfo.classList.add('flex')
+
+    const commenter =  document.createElement('div')
+    commenter.classList.add('commenter')
+    commenter.textContent = comment.username
+    const commentDate =  document.createElement('div')
+    commentDate.classList.add('comment-date')
+    commentDate.textContent = comment.date.substring(0,10)
+    commentInfo.appendChild(commenter)
+    commentInfo.appendChild(commentDate)
+    
+
+    const commentEleme = document.createElement('div')
+    commentEleme.classList.add('comment')
+    commentEleme.textContent = comment.comment
+    const likesContainer = document.createElement('div')
+    const like = document.createElement('div')
+    likesContainer.classList.add('flex')
+    likesContainer.classList.add('vertical')
+    likesContainer.classList.add('likes')
+    const commentId = comment._id
+    likesContainer.id = commentId
+    likesContainer.onclick = (e =>{ addCommentLike(e.target.parentNode.id)})
+    const heartIcon = document.createElement('i')
+    heartIcon.classList.add('material-symbols-outlined')
+    heartIcon.textContent = 'favorite'
+    like.textContent = comment.likes
+    likesContainer.appendChild(heartIcon)
+    likesContainer.appendChild(like)
+
+    commentContainer.appendChild(commentInfo)
+    commentContainer.appendChild(commentEleme)
+    commentContainer.appendChild(likesContainer)
+    commentsContainer.appendChild(commentContainer)
+  })
+
+  //update bg height
+  let height = document.querySelector('.main-post').scrollHeight + 140
+  document.querySelector('#post-bg').style.height = height + 'px'
+ }
+
+ function addCommentLike(commentId){
+    postAPI.post('post/comment/'+commentId+'/upvote').then(resData =>{
+      const errStat = checkResponseForTokErrors(resData,addCommentLike, setLoading)
+      if(!errStat){
+        if(resData.status === 200){
+          let currentComment = document.getElementById(commentId)
+          const childElem = currentComment.children[1]
+          let likes = childElem.textContent
+          likes = Number(likes)
+          childElem.textContent = likes+1
+          currentComment.style.color = 'red'
+          currentComment.onclick = (e =>{ removeCommentLike(e.target.parentNode.id)})
+        }
+      }
+    }).catch(err=>{
+      console.log(err)
+    })
+ }
+
+ function removeCommentLike(commentId){
+  postAPI.post('post/comment/'+commentId+'/downvote').then(resData =>{
+    const errStat = checkResponseForTokErrors(resData,removeCommentLike, setLoading)
+    if(!errStat){
+      if(resData.status === 200){
+        let currentComment = document.getElementById(commentId)
+        const childElem = currentComment.children[1]
+        let likes = childElem.textContent
+        likes = Number(likes)
+        childElem.textContent = likes-1
+        currentComment.style.color = ''
+        currentComment.onclick = (e =>{ addCommentLike(e.target.parentNode.id)})
+      }
+    }
+  }).catch(err=>{
+    console.log(err)
+  })
+ }
   useEffect(()=>{
     let contenWidth = document.querySelector('.main-post-title').clientWidth
-    console.log(contenWidth)
-    document.querySelector('.sep-line').style.width = contenWidth + 'px'
+    let lines = document.querySelectorAll('.sep-line')
+    lines.forEach(line =>{
+      line.style.width = contenWidth + 'px'
+    })
   },[])
 
 
@@ -122,7 +223,6 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
            <div className="material-symbols-outlined cursor" id='add-fav' onClick={addLike}>heart_plus</div>{postLikes}
           </div>
           <div className="comments flex vertical horizontal">
-          <div className="material-symbols-outlined" id='add-fav' onClick={addLike}>message</div>{commentsCount}
           </div>
         </div>
         <hr className="sep-line" />
@@ -138,6 +238,12 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
       { postEdit ? <div>
         <div className="button publish-button"  onClick={deletePost} style={{"color" : 'red'}}>Delete</div>
       </div> : null}
+      <hr className="sep-line" style={{marginTop: '150px'}}/>
+        
+      <div className="flex column" id='comments-container'>
+        <div className="content-title" id='comment-line'>Comments</div>
+       { !postComments ?  <div className="show-comments" onClick={fetchComments}>View Comments</div> : null}
+      </div>
     </div>
   )
 }

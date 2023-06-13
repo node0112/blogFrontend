@@ -39,11 +39,10 @@ function Header({selected,setSelected, setDraftMode, setLoading, insertPosts, cl
     let lsemail = localStorage.getItem('email')
     let lsUsername = localStorage.getItem('username')
     if(lsemail){
-      console.log(true)
-        setTooltip(true)
-        setEmail(lsemail)
-        setUsername(lsUsername)
-    }
+      setTooltip(true)
+      setEmail(lsemail)
+      setUsername(lsUsername)
+  }
 
   },[])
   

@@ -121,3 +121,46 @@
     background-color: gray;
     color: var(--accent);
 }
+
+.comment-container{
+    border-left: solid 5px gray;
+    height: 100px;
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 20px;
+    transition: all 0.5s;
+}
+
+.comment-info{
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.comment{
+    font-size: 20px;
+    overflow-y: scroll;
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* number of lines to show */
+           line-clamp: 2; 
+   -webkit-box-orient: vertical;
+   text-transform: capitalize;
+}
+
+#comment-line{
+    z-index: 0;
+}
+
+.likes{
+    position: absolute;
+    bottom: 0;
+}
+
+.show-comments{
+  font-size: 33px;
+  margin: auto;
+  color: gray;
+}
+
+.show-comments:hover{
+    color: var(--grayblack);
+}

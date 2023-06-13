@@ -35,7 +35,7 @@ function Sidebar({selected, setSelected, setDraftMode, setSidebarOpen, sidebarOp
       sidebarElement.style.left = '0'
     }
     else if(!sidebarOpen){
-      sidebarElement.style.left = '-181px'
+      sidebarElement.style.left = '-195px'
     }
   }, [sidebarOpen])
  

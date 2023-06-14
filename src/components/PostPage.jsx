@@ -154,6 +154,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
     like.textContent = comment.likes
     likesContainer.appendChild(heartIcon)
     likesContainer.appendChild(like)
+    likesContainer.classList.add('cursor')
 
     commentContainer.appendChild(commentInfo)
     commentContainer.appendChild(commentEleme)
@@ -198,8 +199,10 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
       }
       addCommentButton.classList.remove('spin-animation')
       commentInputElem.value = 'Added Comment'
+      commentInputElem.style.color = 'yellowgreen'
       setTimeout(() => {
         commentInputElem.value = ''
+        commentInputElem.style.color = ''
       }, 1500);
     }).catch(err =>{
       addCommentButton.classList.remove('spin-animation')
@@ -307,7 +310,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
           <i className="material-symbols-outlined" id='add-comment-btn' onClick={addComment} >add_box</i>
         </div>
        { !postComments ?  <div className="show-comments" onClick={fetchComments}>View Comments</div> : null}
-      </div>
+      </div> 
     </div>
   )
 }

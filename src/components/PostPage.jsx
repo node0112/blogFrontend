@@ -301,10 +301,10 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
       { postEdit ? <div>
         <div className="button publish-button"  onClick={deletePost} style={{"color" : 'red'}}>Delete</div>
       </div> : null}
-      <hr className="sep-line" style={{marginTop: '150px'}}/>
+      
         
       <div className="flex column" id='comments-container'>
-        <div className="content-title" id='comment-line'>Comments</div>
+        <div className="content-title" style={{marginTop: '40px', zIndex: '0', marginBottom: '50px'}}>Comments</div>
         <div id="add-comment-box">
           <input type="text" id="comment-inp" placeholder='Add a comment'  onInput={(comment)=>{setCommentInput(comment.target.value)}}/>
           <i className="material-symbols-outlined" id='add-comment-btn' onClick={addComment} >add_box</i>

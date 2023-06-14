@@ -122,6 +122,11 @@
     color: var(--accent);
 }
 
+#comments-container{
+    border-top: 7px solid var(--grayblack);
+    margin-top: 90px;
+}
+
 .comment-container{
     border-left: solid 5px gray;
     height: 100px;
@@ -144,10 +149,6 @@
            line-clamp: 2; 
    -webkit-box-orient: vertical;
    text-transform: capitalize;
-}
-
-#comment-line{
-    z-index: 0;
 }
 
 .likes{

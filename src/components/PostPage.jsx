@@ -27,6 +27,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
   const[postEdit, setPostEdit] = useState(false)
 
   const [postComments,setPostComments] = useState(false)
+  const [commentInput, setCommentInput] = useState('')
 
   useEffect(()=>{
       fetchPost() //get post from server on inital render
@@ -108,6 +109,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
         let commentsData = resData.data.comments
         console.log(commentsData)
         if(commentsData.length > 0) renderComments(commentsData)
+        else setPostComments(true)
       }
     }).catch(err=>{
       setLoading(false)
@@ -115,7 +117,7 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
     })
  }
 
- function renderComments(comments){
+ function renderComments(comments){ //render all comments into the dom
   const commentsContainer = document.getElementById('comments-container')
   setPostComments(true)
   comments.forEach(comment =>{
@@ -162,6 +164,64 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
   //update bg height
   let height = document.querySelector('.main-post').scrollHeight + 140
   document.querySelector('#post-bg').style.height = height + 'px'
+ }
+
+ async function addComment(){
+  const commentInputElem = document.getElementById('comment-inp')
+  const addCommentButton = document.getElementById('add-comment-btn')
+
+  console.log(commentInput.length)
+  addCommentButton.onclick = ''
+  if(commentInput.length > 3){
+    addCommentButton.classList.add('spin-animation')
+
+    //construct comment req
+    const user = localStorage.getItem('userID')
+    const username = localStorage.getItem('username')
+    let date = new Date()
+    date = date.toISOString()
+
+    const commentRes = {
+      comment : commentInput,
+      user,
+      username,
+      date
+    }
+    console.log(commentRes)
+    postAPI.post('/post/'+postID+'/comment',commentRes).then(resData =>{
+      const data = resData.data
+      if(data.errors || resData.status === 500){
+        commentInputElem.value = 'Error'
+        setTimeout(() => {
+          commentInputElem.value = commentInput
+        }, 2000);
+      }
+      addCommentButton.classList.remove('spin-animation')
+      commentInputElem.value = 'Added Comment'
+      setTimeout(() => {
+        commentInputElem.value = ''
+      }, 1500);
+    }).catch(err =>{
+      addCommentButton.classList.remove('spin-animation')
+      commentInputElem.value = 'Error'
+      setCommentInput('')
+      setTimeout(() => {
+        commentInputElem.value = ''
+      }, 1500);
+    })
+    return
+  }
+  else{
+    addCommentButton.style.color = 'red'
+    addCommentButton.onclick = addComment
+    commentInputElem.value = 'Error; Comment must be at least 3 characters long' 
+    setTimeout(() => {
+      addCommentButton.style.color = ''
+    }, 1000);
+    setTimeout(() => {
+      commentInputElem.value = commentInput
+    }, 2000);
+  }
  }
 
  function addCommentLike(commentId){
@@ -242,6 +302,10 @@ function PostPage({postID, setDraftMode, publishPost, unpublishPost, deletePost}
         
       <div className="flex column" id='comments-container'>
         <div className="content-title" id='comment-line'>Comments</div>
+        <div id="add-comment-box">
+          <input type="text" id="comment-inp" placeholder='Add a comment'  onInput={(comment)=>{setCommentInput(comment.target.value)}}/>
+          <i className="material-symbols-outlined" id='add-comment-btn' onClick={addComment} >add_box</i>
+        </div>
        { !postComments ?  <div className="show-comments" onClick={fetchComments}>View Comments</div> : null}
       </div>
     </div>

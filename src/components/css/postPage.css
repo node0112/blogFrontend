@@ -164,3 +164,33 @@
 .show-comments:hover{
     color: var(--grayblack);
 }
+
+#comment-inp{
+    font-size: 25px;
+    width: 80%;
+    background-color: transparent;
+    border: none;
+    margin-left: 7px;
+    border-bottom: 4px solid var(--grayblack);
+    margin-bottom: 30px;
+}
+
+.spin-animation{
+    animation-name: spin;
+    animation-duration: 0.8s;
+    animation-delay: 0.2s;
+    animation-iteration-count: infinite;
+}
+
+#add-comment-btn{
+    transition: all 0.3s ease-in-out;
+}
+
+@keyframes spin {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(359deg);
+    }
+}
